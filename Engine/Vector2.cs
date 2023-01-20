@@ -27,5 +27,10 @@ namespace Engine
         {
             return ($"{ x } , { y }") ;
         }
+
+        public Vector2 AddVector(Vector2 vector)
+        {
+            return new Vector2(this.x + vector.x, this.y + vector.y);
+        }
     }
 }

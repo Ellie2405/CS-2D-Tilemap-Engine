@@ -10,7 +10,7 @@ namespace Engine
     public abstract class Tile
     {
         public Vector2 position { get; protected set; }
-        public Vector2 indexer { get; protected set; } // might be deleted
+        public int indexer { get; protected set; } // might be deleted
         public enum Actor
         {
             Player1,
@@ -31,5 +31,9 @@ namespace Engine
             this.position = position;
         }
 
+        public void IndexerSetter(int value)
+        {
+            indexer = value;
+        }
     }
 }
