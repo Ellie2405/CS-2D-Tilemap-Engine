@@ -8,19 +8,19 @@ namespace Engine
 {
     abstract class TheEngine
     {
-        public TileObject TileObjectFacroty()
-        {
-            return new TileObject();
-        }
+        //public TileObject TileObjectFacroty()
+        //{
+        //    return new TileObject();
+        //}
 
-        public Tile TileFacroty()
-        {
-            return new Tile();
-        }
+        //public Tile TileFacroty()
+        //{
+        //    return new Tile();
+        //}
 
-        public void SetTileObject(TileObject obj, Vector2 pos)
-        {
-            obj.Position = pos;
-        }
+        //public void SetTileObject(TileObject obj, Vector2 pos)
+        //{
+        //    obj.Position = pos;
+        //}
     }
 }

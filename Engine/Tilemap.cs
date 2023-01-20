@@ -118,6 +118,56 @@ namespace Engine
         }
 
 
+        void something()
+        {
+            int d = -1;  // direction, changes when moved enough in said direction (more than l)
+            int l = 0;  // how much to move in said direction
+            int s = 0;  // how much it has already moved in said direction
+            int t = 1; // turn counter, after turning twice l should increase
+
+            for (int j = 0; j < 70; j++)
+            {
+                //if moved enough in the current direction, change direction and reset step counter, and count 1 direction change
+                if (s >= l)
+                {
+                    d++;
+                    s = 0;
+                    t++;
+                }
+
+                //every 2 direction changes, increase how much you move in each direction and reset turn counter
+                if (t == 2)
+                {
+                    l++;
+                    Console.WriteLine($"will now take {l} steps in each direction");
+                    t = 0;
+                }
+
+                //do something in the direction
+                switch (d % 4)
+                {
+                    case 0:
+                        Console.WriteLine("moving left");
+                        break;
+                    case 1:
+                        Console.WriteLine("moving up");
+                        break;
+                    case 2:
+                        Console.WriteLine("moving right");
+                        break;
+                    case 3:
+                        Console.WriteLine("moving down");
+                        break;
+                    default:
+                        break;
+                }
+
+                //count step taken
+                s++;
+
+            }
+
+        }
 
 
         public void Dispose() { }
