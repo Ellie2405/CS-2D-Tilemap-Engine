@@ -9,22 +9,25 @@ using System.Threading.Tasks;
 
 namespace Engine
 {
-    public class Tilemap : IEnumerable<Tile>
+    public class Tilemap<T> : IEnumerable<Tile> where T : Tile, new()
     {
-        public Tile[,] grid;
+        public T[,] grid;
         //public Vector2 testStartPos = new Vector2(4, 4); // uncomment and insert in GetEnumerator() if you want to use the spiral enumerator
         public Vector2 gridSize = new Vector2(8, 8);
-        public Tilemap(Tile tileType, Vector2 gridSize)
+        private Vector2 indexValue = new Vector2(0, 0);
+
+        public Tilemap(Vector2 gridSize)
         {
-            grid = new Tile[(int)gridSize.x, (int)gridSize.y];
+            grid = new T[(int)gridSize.x, (int)gridSize.y];
             TileInjector(gridSize, grid);
             this.gridSize = gridSize;
 
-            int value = 1;
+
             foreach (var item in grid)
             {
-                item.IndexerSetter(value);
-                value++;
+                item.IndexerSetter(indexValue);
+                if (indexValue.y < grid.GetLength(1) - 1) indexValue = new Vector2(indexValue.x, indexValue.y + 1);
+                else if (indexValue.y == grid.GetLength(1) - 1) indexValue = new Vector2(indexValue.x + 1, 0);
             }
         }
 
@@ -37,8 +40,9 @@ namespace Engine
                 tilePos = new Vector2(tilePos.x, tilePos.y + 30);
 
                 for (int j = 0; j < gridSize.y; j++)
-                {
-                    grid[i, j] = new RectangleTile(tilePos);
+                {                    
+                    grid[i, j] = new T();
+                    grid[i, j].PositionFactory(tilePos);
                     tilePos = new Vector2(tilePos.x + 30, tilePos.y);
                     Log.InfoMessage($"A rectangle tile was injected at {grid[i, j]}.");
                 }

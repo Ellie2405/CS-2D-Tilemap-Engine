@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,12 +26,28 @@ namespace Engine
 
         public override string ToString()
         {
-            return ($"{ x } , { y }") ;
+            return ($"x {x}, y {y}");
+        }
+
+        public override bool Equals(object? obj)
+        {
+            var d = (Vector2)obj;
+            return this.x == d.x && this.y == d.y;
+        }
+
+        public override int GetHashCode() //redo this pls
+        {
+            return (int)x + (int)y;
         }
 
         public Vector2 AddVector(Vector2 vector)
         {
             return new Vector2(this.x + vector.x, this.y + vector.y);
+        }
+
+        public Vector2 SubtractVector(Vector2 vector)
+        {
+            return new Vector2(this.x - vector.x, this.y - vector.y);
         }
     }
 }
