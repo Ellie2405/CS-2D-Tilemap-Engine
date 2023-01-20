@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Engine
 {
-    public abstract class TileObject
+    public abstract class TileObject : ICloneable
     {
         public string Name { get; protected set; }
         public char Sign { get; protected set; }
@@ -35,8 +35,16 @@ namespace Engine
 
         public abstract void Move(Vector2 availableMove);
 
+        public virtual void PassedCallBack()
+        {
+            Log.RegularMessage($"{this.Name} had a tile object passed on it.");
+        }
 
+        public virtual void SteppedCallBack(Tile tile)
+        {
+            Log.RegularMessage($"{this.Name} has stepped on a tile at {tile.position}");
+        }
 
-
+        public abstract object Clone();
     }
 }
