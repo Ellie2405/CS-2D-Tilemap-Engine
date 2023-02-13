@@ -5,14 +5,8 @@ Vector2 size = new Vector2(8, 8);
 Tilemap<RectangleTile> map = new Tilemap<RectangleTile>(size);
 map.GetEnumerator();
 
-
 foreach (var item in map)
 {
     Console.WriteLine(item.indexer);
 }
-
-
-
-
-
 

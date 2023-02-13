@@ -9,10 +9,10 @@ namespace Engine
 {
     public class RectangleTile : Tile
     {
-        //public RectangleTile(Vector2 position) : base(position)
-        //{
-        //    this.position = position;
-        //    Log.InfoMessage($"A new rectangle tile was created at {this.position.x} , {this.position.y} position.");
-        //}
+       // public RectangleTile(Vector2 position) : base(position)
+       // {
+       //     this.position = position;
+       //     Log.InfoMessage($"A new rectangle tile was created at {this.position.x} , {this.position.y} position.");
+       // }
     }
 }
