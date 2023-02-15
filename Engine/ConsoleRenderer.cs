@@ -8,31 +8,63 @@ namespace Engine
 {
     internal class ConsoleRenderer : Renderer
     {
-        List<TileRenderer> tileRenderers = new();
-        
+        Dictionary<TileObject, TileRenderer<TileObject>> tileObjects = new Dictionary<TileObject, TileRenderer<TileObject>>();
+        List<TileRenderer<TileObject>> tileRenderers = new();
+        RectangleTile[,] grid = new RectangleTile[8, 8];
+        int index;
+        //know the color of each team!!!!
+        TileObject _to = new SomeObject("_to", 's', 1, new(1, 1));
 
         public ConsoleRenderer()
         {
-            NewTileRenderer();
+            NewTileRenderer(_to);
         }
 
-        void NewTileRenderer()
+        void NewTileRenderer(TileObject tileObject)
         {
-            tileRenderers.Add(new TileRenderer());
+            tileObjects.Add(tileObject, new TileRenderer<TileObject>('$'));
+            //tileRenderers.Add(new TileRenderer());
         }
 
         public override void Render()
         {
-            foreach (var item in tileRenderers)
+            throw new NotImplementedException();
+        }
+
+        public override void Render(Tilemap<RectangleTile> map)
+        {
+            foreach (var item in map)
             {
-                item.PrintTile();
+                if (true)
+                {
+                    tileObjects[_to].Print();
+                }
             }
         }
 
         public override void Start()
         {
-            throw new NotImplementedException();
+            foreach (var item in grid)
+            {
+
+            }
         }
     }
 
+    class SomeObject : TileObject
+    {
+        public SomeObject(string name, char sign, int actorNum, Vector2 pos) : base(name, sign, actorNum, pos)
+        {
+        }
+
+        public override object Clone()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Move(Vector2 availableMove)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

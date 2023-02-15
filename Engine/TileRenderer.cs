@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Engine
 {
-    internal class TileRenderer
+    internal class TileRenderer<T> where T : TileObject
     {
         char objectSign = ' ';
         ConsoleColor tileBGColor;
@@ -14,12 +14,12 @@ namespace Engine
         ConsoleColor objectBGColor;
         ConsoleColor objectTextColor;
 
-        public TileRenderer()
+        public TileRenderer(char sign)
         {
-
+            this.objectSign = sign;
         }
 
-        public void PrintTile()
+        public void Print()
         {
             Console.BackgroundColor = tileBGColor;
             Console.ForegroundColor = tileTextColor;

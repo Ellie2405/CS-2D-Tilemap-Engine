@@ -10,5 +10,6 @@ namespace Engine
     {
         public abstract void Start();
         public abstract void Render();
+        public abstract void Render(Tilemap<RectangleTile> map);
     }
 }
