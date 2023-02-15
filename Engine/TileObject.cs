@@ -42,6 +42,8 @@ namespace Engine
 
         public virtual void SteppedCallBack(Tile tile)
         {
+            if(tile.tileObject == null) tile.TileObjectSetter(this);
+            //else interact with current tile object
             Log.RegularMessage($"{this.Name} has stepped on a tile at {tile.position}");
         }
 

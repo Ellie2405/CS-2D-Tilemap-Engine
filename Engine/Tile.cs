@@ -11,6 +11,7 @@ namespace Engine
     {
         public Vector2 position { get; protected set; }
         public Vector2 indexer { get; protected set; } // might be deleted
+        public TileObject tileObject { get; protected set; }
         public enum Actor
         {
             Player1,
@@ -40,5 +41,16 @@ namespace Engine
         {
             position = pos;
         }
+
+        public void TileObjectSetter(TileObject to)
+        {
+            tileObject = to;
+        }
+
+        public void TileObjectRemover(TileObject to)
+        {
+            
+        }
+
     }
 }
