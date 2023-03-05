@@ -22,5 +22,7 @@ namespace Engine
         {
             throw new NotImplementedException();
         }
+        static public TestObject Sample() { return new TestObject(0,"0"); }
+
     }
 }

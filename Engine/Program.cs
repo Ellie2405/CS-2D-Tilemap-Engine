@@ -11,4 +11,11 @@ map.TileObjectCreator(new Vector2(0f, 0f), "pawn1", 1);
 
 //render test
 Renderer renderer = new ConsoleRenderer();
+renderer.NewObject(TestObject.Sample(), 'P');
 renderer.Render(map);
+
+
+
+
+
+
