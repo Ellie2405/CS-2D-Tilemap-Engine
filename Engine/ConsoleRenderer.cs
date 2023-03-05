@@ -16,7 +16,7 @@ namespace Engine
         //know the color of each team!!!!
         ConsoleColor team1TextColor;
         ConsoleColor team2TextColor;
-        TileObject _to = new SomeObject(1);
+        TileObject _to = new SomeObject(1, "pawn 2");
 
         public ConsoleRenderer()
         {
@@ -63,7 +63,7 @@ namespace Engine
 
     class SomeObject : TileObject
     {
-        public SomeObject(int actorNum) : base(actorNum)
+        public SomeObject(int actorNum, string iD) : base(actorNum, iD)
         {
 
         }

@@ -10,9 +10,7 @@ namespace Engine
 {
     public abstract class TileObject : ICloneable
     {
-        public string Name { get; protected set; }
-        public char Sign { get; protected set; }
-        public Vector2 Position { get; protected set; }
+        public string ID { get; protected set; }
         private enum Actor
         {
             Player1,
@@ -23,28 +21,26 @@ namespace Engine
         private List<Vector2> possibleMoves;
         private List<Vector2> availableMoves;
 
-        public TileObject(int actorNum)
+        public TileObject(int actorNum, string iD)
         {
-            //Name = name;
-            //Sign = sign;
-            //Position = pos;
+            ID = iD;
             if (actorNum == 1) actor = Actor.Player1;
             else if (actorNum == 2) actor = Actor.Player2;
-            Log.InfoMessage($"A new object was created - {this.Name}, {this.Sign}, {this.Position}, {actor}");
+            Log.InfoMessage($"A new object was created - {actor}, ID : {ID}");
         }
 
         public abstract void Move(Vector2 availableMove);
 
         public virtual void PassedCallBack()
         {
-            Log.RegularMessage($"{this.Name} had a tile object passed on it.");
+            Log.RegularMessage($"{this.ID} had a tile object passed on it.");
         }
 
         public virtual void SteppedCallBack(Tile tile)
         {
             if(tile.tileObject == null) tile.TileObjectSetter(this);
             //else interact with current tile object
-            Log.RegularMessage($"{this.Name} has stepped on a tile at {tile.position}");
+            Log.RegularMessage($"{this.ID} has stepped on a tile at {tile.position}");
         }
 
         public abstract object Clone();

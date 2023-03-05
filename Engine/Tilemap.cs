@@ -50,6 +50,11 @@ namespace Engine
             Log.InfoMessage("The tile map finished configuring.");
         }
 
+        public void TileObjectCreator(Vector2 tileIndex, string ID, int actorNum)
+        {
+            grid[(int)tileIndex.x, (int)tileIndex.y].TileObjectSetter(new TestObject(actorNum, ID));
+        }
+
         public Tile GetTile(Vector2 index)
         {
             return grid[(int)index.x, (int)index.y];
