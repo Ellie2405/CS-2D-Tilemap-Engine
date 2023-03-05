@@ -8,37 +8,47 @@ namespace Engine
 {
     internal class ConsoleRenderer : Renderer
     {
-        Dictionary<TileObject, TileRenderer<TileObject>> tileObjects = new Dictionary<TileObject, TileRenderer<TileObject>>();
-        List<TileRenderer<TileObject>> tileRenderers = new();
+        Dictionary<Type, TileRenderer> ObjectSigns = new Dictionary<Type, TileRenderer>();
+        List<TileRenderer> tileRenderers = new();
+        List<TileRenderer> tileRenderersTest = new();
         RectangleTile[,] grid = new RectangleTile[8, 8];
-        int index;
+
         //know the color of each team!!!!
-        TileObject _to = new SomeObject("_to", 's', 1, new(1, 1));
+        ConsoleColor team1TextColor;
+        ConsoleColor team2TextColor;
+        TileObject _to = new SomeObject(1);
 
         public ConsoleRenderer()
         {
-            NewTileRenderer(_to);
+            NewObject(_to.GetType(), '$');
         }
 
-        void NewTileRenderer(TileObject tileObject)
+        public override void NewObject(Type tileObjectType, char oSign)
         {
-            tileObjects.Add(tileObject, new TileRenderer<TileObject>('$'));
-            //tileRenderers.Add(new TileRenderer());
+            tileRenderers.Add(new TileRenderer(oSign));
+            ObjectSigns.Add(tileObjectType, tileRenderers.Last());
         }
 
-        public override void Render()
+        public override void NewObject(TileObject tileObject, char oSign)
         {
-            throw new NotImplementedException();
+            tileRenderers.Add(new TileRenderer(oSign));
+            ObjectSigns.Add(tileObject.GetType(), tileRenderers.Last());
         }
 
         public override void Render(Tilemap<RectangleTile> map)
         {
             foreach (var item in map)
             {
-                if (true)
+                if (item.tileObject != null)
                 {
-                    tileObjects[_to].Print();
+                    ObjectSigns[item.tileObject.GetType()].Print();
                 }
+                //1 for use, 2 for test
+                else TileRenderer.PrintEmpty();
+                //else ObjectSigns[_to.GetType()].Print();
+
+                if (item.indexer.y+1 == map.gridSize.y)
+                    Console.WriteLine();
             }
         }
 
@@ -53,8 +63,9 @@ namespace Engine
 
     class SomeObject : TileObject
     {
-        public SomeObject(string name, char sign, int actorNum, Vector2 pos) : base(name, sign, actorNum, pos)
+        public SomeObject(int actorNum) : base(actorNum)
         {
+
         }
 
         public override object Clone()

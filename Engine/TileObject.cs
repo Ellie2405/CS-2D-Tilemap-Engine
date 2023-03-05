@@ -23,11 +23,11 @@ namespace Engine
         private List<Vector2> possibleMoves;
         private List<Vector2> availableMoves;
 
-        public TileObject(string name, char sign, int actorNum, Vector2 pos)
+        public TileObject(int actorNum)
         {
-            Name = name;
-            Sign = sign;
-            Position = pos;
+            //Name = name;
+            //Sign = sign;
+            //Position = pos;
             if (actorNum == 1) actor = Actor.Player1;
             else if (actorNum == 2) actor = Actor.Player2;
             Log.InfoMessage($"A new object was created - {this.Name}, {this.Sign}, {this.Position}, {actor}");
@@ -48,5 +48,10 @@ namespace Engine
         }
 
         public abstract object Clone();
+
+        public void Fct()
+        {
+            //return an object
+        }
     }
 }

@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 
 namespace Engine
 {
-    internal class TileRenderer<T> where T : TileObject
+    internal class TileRenderer//<T> where T : TileObject
     {
         char objectSign = ' ';
         ConsoleColor tileBGColor;
         ConsoleColor tileTextColor = ConsoleColor.Gray;
         ConsoleColor objectBGColor;
-        ConsoleColor objectTextColor;
+        ConsoleColor objectTextColor = ConsoleColor.Gray;
 
         public TileRenderer(char sign)
         {
-            this.objectSign = sign;
+            objectSign = sign;
         }
 
         public void Print()
@@ -30,6 +30,17 @@ namespace Engine
             Console.BackgroundColor = tileBGColor;
             Console.ForegroundColor = tileTextColor;
             Console.Write(']');
+        }
+
+        static public void PrintEmpty()
+        {
+            Console.Write("[ ");
+            Console.Write(']');
+
+        }
+        public void SignPrint()
+        {
+            Console.Write(objectSign);
         }
     }
 }
