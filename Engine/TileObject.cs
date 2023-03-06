@@ -18,8 +18,7 @@ namespace Engine
         }
         private Actor actor;
 
-        private List<Vector2> possibleMoves;
-        private List<Vector2> availableMoves;
+        private List<Vector2> moves;
 
         public TileObject(int actorNum, string iD)
         {
@@ -31,6 +30,16 @@ namespace Engine
 
         public abstract void Move(Vector2 availableMove);
 
+        public virtual void AddMove(Vector2 move)
+        {
+            moves.Add(move);
+        }
+
+        public virtual void AddMoves(List<Vector2> moveSet)
+        {
+            moves.AddRange(moveSet);
+        }
+
         public virtual void PassedCallBack()
         {
             Log.RegularMessage($"{this.ID} had a tile object passed on it.");
@@ -40,7 +49,7 @@ namespace Engine
         {
             if(tile.tileObject == null) tile.TileObjectSetter(this);
             //else interact with current tile object
-            Log.RegularMessage($"{this.ID} has stepped on a tile at {tile.position}");
+            Log.RegularMessage($"{this.ID} has stepped on a tile at index of {tile.indexer}");
         }
 
         public abstract object Clone();

@@ -9,8 +9,7 @@ namespace Engine
 {
     public abstract class Tile
     {
-        public Vector2 position { get; protected set; }
-        public Vector2 indexer { get; protected set; } // might be deleted
+        public Vector2 indexer { get; protected set; } 
         public TileObject? tileObject { get; protected set; }
         public enum Actor
         {
@@ -37,20 +36,15 @@ namespace Engine
             indexer = index;
         }
 
-        public void PositionFactory(Vector2 pos)
-        {
-            position = pos;
-        }
-
         public void TileObjectSetter(TileObject to)
         {
             tileObject = to;
             state = State.Occupied;
         }
 
-        public void TileObjectRemover(TileObject to)
+        public void TileObjectRemover()
         {
-            
+            tileObject = null;
         }
 
     }

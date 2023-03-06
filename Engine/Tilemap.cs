@@ -42,9 +42,8 @@ namespace Engine
                 for (int j = 0; j < gridSize.y; j++)
                 {                    
                     grid[i, j] = new T();
-                    grid[i, j].PositionFactory(tilePos);
                     tilePos = new Vector2(tilePos.x + 30, tilePos.y);
-                    Log.InfoMessage($"A rectangle tile was injected at {grid[i, j].position}.");
+                    Log.InfoMessage($"A rectangle tile was injected at {grid[i, j].indexer}.");
                 }
             }
             Log.InfoMessage("The tile map finished configuring.");
