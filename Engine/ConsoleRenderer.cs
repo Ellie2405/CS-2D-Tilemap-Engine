@@ -16,11 +16,11 @@ namespace Engine
         //know the color of each team!!!!
         ConsoleColor team1TextColor;
         ConsoleColor team2TextColor;
-        TileObject _to = new SomeObject(1, "pawn 2");
+        TileObject _to = new TestObject2();
 
         public ConsoleRenderer()
         {
-            NewObject(_to.GetType(), '$');
+            //NewObject(_to.GetType(), '$');
         }
 
         public override void NewObject(Type tileObjectType, char oSign)
@@ -47,7 +47,7 @@ namespace Engine
                 else TileRenderer.PrintEmpty();
                 //else ObjectSigns[_to.GetType()].Print();
 
-                if (item.indexer.y+1 == map.gridSize.y)
+                if (item.indexer.y == map.gridSize.y)
                     Console.WriteLine();
             }
         }
@@ -63,10 +63,10 @@ namespace Engine
 
     class SomeObject : TileObject
     {
-        public SomeObject(int actorNum, string iD) : base(actorNum, iD)
-        {
-
-        }
+      //public SomeObject(int actorNum, string iD) : base(actorNum, iD)
+      //{
+      //
+      //}
 
         public override object Clone()
         {

@@ -14,7 +14,7 @@ namespace Engine
         public T[,] grid;
         //public Vector2 testStartPos = new Vector2(4, 4); // uncomment and insert in GetEnumerator() if you want to use the spiral enumerator
         public Vector2 gridSize = new Vector2(8, 8);
-        private Vector2 indexValue = new Vector2(0, 0);
+        private Vector2 indexValue = new Vector2(1, 1);
 
         public Tilemap(Vector2 gridSize)
         {
@@ -26,9 +26,11 @@ namespace Engine
             foreach (var item in grid)
             {
                 item.IndexerSetter(indexValue);
-                if (indexValue.y < grid.GetLength(1) - 1) indexValue = new Vector2(indexValue.x, indexValue.y + 1);
-                else if (indexValue.y == grid.GetLength(1) - 1) indexValue = new Vector2(indexValue.x + 1, 0);
+                if (indexValue.y < grid.GetLength(1)) indexValue = new Vector2(indexValue.x, indexValue.y + 1);
+                else if (indexValue.y == grid.GetLength(1)) indexValue = new Vector2(indexValue.x + 1, 1);
             }
+
+            GetEnumerator();
         }
 
 
@@ -51,7 +53,7 @@ namespace Engine
 
         public void TileObjectCreator(Vector2 tileIndex, string ID, int actorNum)
         {
-            grid[(int)tileIndex.x, (int)tileIndex.y].TileObjectSetter(new TestObject(actorNum, ID));
+           // grid[(int)tileIndex.x, (int)tileIndex.y].TileObjectSetter(new TestObject(actorNum, ID));
         }
 
         public Tile GetTile(Vector2 index)
