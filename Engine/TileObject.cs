@@ -11,12 +11,13 @@ namespace Engine
     public abstract class TileObject : ICloneable
     {
         public string ID { get; protected set; }
-        protected enum Actor
+        public enum Actor
         {
             Player1,
             Player2
         }
-        protected Actor actor;
+        //protected Actor actor;
+        public Actor ObjectActor { get; protected set; }
 
         private List<Vector2> moves;
 
@@ -31,9 +32,9 @@ namespace Engine
         public void ObjectSetter(int actorNum, string iD)
         {
             ID = iD;
-            if (actorNum == 1) actor = Actor.Player1;
-            else if (actorNum == 2) actor = Actor.Player2;
-            Log.InfoMessage($"A new object was created - {actor}, ID : {ID}");
+            if (actorNum == 1) ObjectActor = Actor.Player1;
+            else if (actorNum == 2) ObjectActor = Actor.Player2;
+            Log.InfoMessage($"A new object was created - {ObjectActor}, ID : {ID}");
         }
 
         public abstract void Move(Vector2 availableMove);

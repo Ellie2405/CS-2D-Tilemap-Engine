@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace Engine
 {
@@ -10,18 +11,47 @@ namespace Engine
     {
         Dictionary<Type, TileRenderer> ObjectSigns = new Dictionary<Type, TileRenderer>();
         List<TileRenderer> tileRenderers = new();
-        List<TileRenderer> tileRenderersTest = new();
-        RectangleTile[,] grid = new RectangleTile[8, 8];
 
-        //know the color of each team!!!!
-        ConsoleColor team1TextColor;
-        ConsoleColor team2TextColor;
+        int duoColorCount = 1;
         TileObject _to = new TestObject2();
 
+        #region Constructors
+
+        //render with defaul colors
         public ConsoleRenderer()
         {
-            //NewObject(_to.GetType(), '$');
+            EnableDuoColor();
         }
+
+        //render a monocolored board
+        public ConsoleRenderer(ConsoleColor boardColor)
+        {
+            TileRenderer.SetBoardColor(boardColor);
+        }
+
+        //render custom actor colors with default board
+        public ConsoleRenderer(ConsoleColor actorColor1, ConsoleColor actorColor2)
+        {
+            EnableDuoColor();
+            TileRenderer.SetActorColor(actorColor1, actorColor2);
+        }
+
+        //render custom actor colors with monocolored board
+        public ConsoleRenderer(ConsoleColor actorColor1, ConsoleColor actorColor2, ConsoleColor boardColor)
+        {
+            TileRenderer.SetActorColor(actorColor1, actorColor2);
+            TileRenderer.SetBoardColor(boardColor);
+        }
+
+        //render custom actor colors and custom board colors
+        public ConsoleRenderer(ConsoleColor actorColor1, ConsoleColor actorColor2, ConsoleColor boardColor1, ConsoleColor boardColor2)
+        {
+            EnableDuoColor();
+            TileRenderer.SetActorColor(actorColor1, actorColor2);
+            TileRenderer.SetBoardColor(boardColor1, boardColor2);
+        }
+
+        #endregion
 
         public override void NewObject(Type tileObjectType, char oSign)
         {
@@ -41,33 +71,37 @@ namespace Engine
             {
                 if (item.tileObject != null)
                 {
-                    ObjectSigns[item.tileObject.GetType()].Print();
+                    //would be nice to have actor as an integer
+                    if (item.tileObject.ObjectActor == TileObject.Actor.Player1)
+                        ObjectSigns[item.tileObject.GetType()].Print(ApplyDuoColor(item.indexer), 0);
+                    else
+                        ObjectSigns[item.tileObject.GetType()].Print(ApplyDuoColor(item.indexer), 1);
                 }
-                //1 for use, 2 for test
-                else TileRenderer.PrintEmpty();
-                //else ObjectSigns[_to.GetType()].Print();
+                else TileRenderer.PrintEmpty(ApplyDuoColor(item.indexer));
 
                 if (item.indexer.y == map.gridSize.y)
                     Console.WriteLine();
             }
         }
 
+        void EnableDuoColor()
+        {
+            duoColorCount = 2;
+        }
+
+        int ApplyDuoColor(Vector2 index)
+        {
+            return (int)((index.x + index.y) % duoColorCount);
+        }
+
         public override void Start()
         {
-            foreach (var item in grid)
-            {
 
-            }
         }
     }
 
     class SomeObject : TileObject
     {
-      //public SomeObject(int actorNum, string iD) : base(actorNum, iD)
-      //{
-      //
-      //}
-
         public override object Clone()
         {
             throw new NotImplementedException();
