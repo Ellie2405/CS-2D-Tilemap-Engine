@@ -27,43 +27,43 @@ namespace Engine
 
     }
 
-    class CheckersEngine: TheEngine
+    class CheckersEngine : TheEngine
     {
-        public Tilemap<RectangleTile> map = new Tilemap<RectangleTile>(new Vector2(8,8));
+        public Tilemap<RectangleTile> map = new Tilemap<RectangleTile>(new Vector2Int(8, 8));
 
-        public void CreateObject(Vector2 tileIndex, int actor)
+        public void CreateObject(Vector2Int tileIndex, int actor)
         {
-            Man m = factory.TileObjectFacroty<Man>();
-            m.ObjectSetter(actor, "test1");
-            map.grid[(int)tileIndex.x - 1, (int)tileIndex.y- 1].TileObjectSetter(m);
+            RegularPiece m = factory.TileObjectFacroty<RegularPiece>();
+            m.ObjectSetter(actor, "test1", new Vector2Int(tileIndex.x, tileIndex.y));
+            map.GetTileByIndexer(tileIndex).SetObjectToTile(m);
         }
 
         public void Start()
         {
-            CreateObject(new Vector2(1, 2), 1);
-            CreateObject(new Vector2(1, 4), 1);
-            CreateObject(new Vector2(1, 6), 1);
-            CreateObject(new Vector2(1, 8), 1);
-            CreateObject(new Vector2(2, 1), 1);
-            CreateObject(new Vector2(2, 3), 1);
-            CreateObject(new Vector2(2, 5), 1);
-            CreateObject(new Vector2(2, 7), 1);
-            CreateObject(new Vector2(3, 2), 1);
-            CreateObject(new Vector2(3, 4), 1);
-            CreateObject(new Vector2(3, 6), 1);
-            CreateObject(new Vector2(3, 8), 1);
-            CreateObject(new Vector2(6, 1), 2);
-            CreateObject(new Vector2(6, 3), 2);
-            CreateObject(new Vector2(6, 5), 2);
-            CreateObject(new Vector2(6, 7), 2);
-            CreateObject(new Vector2(7, 2), 2);
-            CreateObject(new Vector2(7, 4), 2);
-            CreateObject(new Vector2(7, 6), 2);
-            CreateObject(new Vector2(7, 8), 2);
-            CreateObject(new Vector2(8, 1), 2);
-            CreateObject(new Vector2(8, 3), 2);
-            CreateObject(new Vector2(8, 5), 2);
-            CreateObject(new Vector2(8, 7), 2);
+            CreateObject(new Vector2Int(1, 2), 1);
+            CreateObject(new Vector2Int(1, 4), 1);
+            CreateObject(new Vector2Int(1, 6), 1);
+            CreateObject(new Vector2Int(1, 8), 1);
+            CreateObject(new Vector2Int(2, 1), 1);
+            CreateObject(new Vector2Int(2, 3), 1);
+            CreateObject(new Vector2Int(2, 5), 1);
+            CreateObject(new Vector2Int(2, 7), 1);
+            CreateObject(new Vector2Int(3, 2), 1);
+            CreateObject(new Vector2Int(3, 4), 1);
+            CreateObject(new Vector2Int(3, 6), 1);
+            CreateObject(new Vector2Int(3, 8), 1);
+            CreateObject(new Vector2Int(6, 1), 2);
+            CreateObject(new Vector2Int(6, 3), 2);
+            CreateObject(new Vector2Int(6, 5), 2);
+            CreateObject(new Vector2Int(6, 7), 2);
+            CreateObject(new Vector2Int(7, 2), 2);
+            CreateObject(new Vector2Int(7, 4), 2);
+            CreateObject(new Vector2Int(7, 6), 2);
+            CreateObject(new Vector2Int(7, 8), 2);
+            CreateObject(new Vector2Int(8, 1), 2);
+            CreateObject(new Vector2Int(8, 3), 2);
+            CreateObject(new Vector2Int(8, 5), 2);
+            CreateObject(new Vector2Int(8, 7), 2);
         }
     }
 }

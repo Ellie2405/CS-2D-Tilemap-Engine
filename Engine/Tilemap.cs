@@ -13,53 +13,91 @@ namespace Engine
     {
         public T[,] grid;
         //public Vector2 testStartPos = new Vector2(4, 4); // uncomment and insert in GetEnumerator() if you want to use the spiral enumerator
-        public Vector2 gridSize = new Vector2(8, 8);
-        private Vector2 indexValue = new Vector2(1, 1);
+        public Vector2Int gridSize = new Vector2Int(8, 8);
+        private Vector2Int indexValue = new Vector2Int(1, 1);
 
-        public Tilemap(Vector2 gridSize)
+        public Tilemap(Vector2Int gridSize)
         {
             grid = new T[(int)gridSize.x, (int)gridSize.y];
-            TileInjector(gridSize, grid);
+            InjectTiles(gridSize, grid);
             this.gridSize = gridSize;
 
 
             foreach (var item in grid)
             {
-                item.IndexerSetter(indexValue);
-                if (indexValue.y < grid.GetLength(1)) indexValue = new Vector2(indexValue.x, indexValue.y + 1);
-                else if (indexValue.y == grid.GetLength(1)) indexValue = new Vector2(indexValue.x + 1, 1);
+                item.SetIndexer(indexValue);
+                if (indexValue.y < grid.GetLength(1)) indexValue = new Vector2Int(indexValue.x, indexValue.y + 1);
+                else if (indexValue.y == grid.GetLength(1)) indexValue = new Vector2Int(indexValue.x + 1, 1);
             }
 
             GetEnumerator();
         }
 
 
-        public void TileInjector(Vector2 gridSize, Tile[,] grid)
+        public void InjectTiles(Vector2Int gridSize, Tile[,] grid)
         {
-            Vector2 tilePos = new Vector2(30, 0);
+            Vector2Int tilePos = new Vector2Int(30, 0);
             for (int i = 0; i < gridSize.x; i++)
             {
-                tilePos = new Vector2(tilePos.x, tilePos.y + 30);
+                tilePos = new Vector2Int(tilePos.x, tilePos.y + 30);
 
                 for (int j = 0; j < gridSize.y; j++)
                 {                    
                     grid[i, j] = new T();
-                    tilePos = new Vector2(tilePos.x + 30, tilePos.y);
+                    tilePos = new Vector2Int(tilePos.x + 30, tilePos.y);
                     Log.InfoMessage($"A rectangle tile was injected at {grid[i, j].indexer}.");
                 }
             }
             Log.InfoMessage("The tile map finished configuring.");
         }
 
-        public void TileObjectCreator(Vector2 tileIndex, string ID, int actorNum)
+
+        public Tile GetTileByIndexer(Vector2Int index)
         {
-           // grid[(int)tileIndex.x, (int)tileIndex.y].TileObjectSetter(new TestObject(actorNum, ID));
+            foreach (var item in grid)
+            {
+                if (item.indexer.x == index.x && item.indexer.y == index.y) return item;
+            }
+
+            throw new Exception("Tile doesnt exist");    
         }
 
-        public Tile GetTile(Vector2 index)
+        public TileObject GetTileObjectByTileIndexer(Vector2Int index)
         {
-            return grid[(int)index.x, (int)index.y];
+            foreach (var item in grid)
+            {
+                if (item.indexer.x == index.x && item.indexer.y == index.y && item.tileObject != null) return item.tileObject;
+            }
+
+            throw new Exception("Tile doesnt exist or Tile object is null");
         }
+
+        public void MoveTileObject(Vector2Int startPos, Vector2Int move)
+        {
+            TileObject to = GetTileObjectByTileIndexer(startPos);
+            Tile t = GetTileByIndexer(startPos);
+
+            Vector2Int newPosition = to.CalculateNewPosition(move);
+            to.SetPosition(newPosition);
+            //Console.WriteLine($"object at {startPos}");
+            //Console.WriteLine($"will move to {newPosition}");
+
+            Tile t2 = GetTileByIndexer(newPosition);
+            to = to.Clone() as TileObject;
+
+            if (move.x > 1 && move.y > 1) GetTileByIndexer(new Vector2Int(startPos.x + 1, startPos.y + 1)).PassedCallBack();
+
+            t2.SetObjectToTile(to);
+            t.RemoveObjectFromTile();
+            
+            //GetTileObjectByTileIndexer(newPosition).SteppedCallBack(GetTileByIndexer(newPosition)); // needs rework
+
+
+            // need to add movement logic - limit to board indexer and to other objects on board
+        }
+
+
+
 
         public IEnumerator<Tile> GetEnumerator()
         {
@@ -74,7 +112,7 @@ namespace Engine
 
     public struct TilemapEnumerator<Tile> : IEnumerator<Tile>
     {
-        Vector2 index = new Vector2(0, -1);
+        Vector2Int index = new Vector2Int(0, -1);
         Tile[,] enumerables;
 
         public TilemapEnumerator(Tile[,] enumerables)
@@ -94,8 +132,8 @@ namespace Engine
 
         public bool MoveNext()
         {
-            if (index.y < enumerables.GetLength(1) - 1) index = new Vector2(index.x, index.y + 1);
-            else if (index.y == enumerables.GetLength(1) - 1) index = new Vector2(index.x + 1, 0);
+            if (index.y < enumerables.GetLength(1) - 1) index = new Vector2Int(index.x, index.y + 1);
+            else if (index.y == enumerables.GetLength(1) - 1) index = new Vector2Int(index.x + 1, 0);
 
             return index.x < enumerables.GetLength(0) && index.y < enumerables.GetLength(1);
         }
@@ -107,11 +145,11 @@ namespace Engine
 
     public struct SpiralEnumerator<Tile> : IEnumerator<Tile>
     {
-        Vector2 index;
+        Vector2Int index;
         Tile[,] enumerables;
 
 
-        public SpiralEnumerator(Tile[,] enumerables, Vector2 index)
+        public SpiralEnumerator(Tile[,] enumerables, Vector2Int index)
         {
             this.enumerables = enumerables;
             this.index = index;
@@ -159,14 +197,14 @@ namespace Engine
             {
                 case 0:
                     {
-                        index = index.AddVector(Vector2.left);
+                        index = index.AddVector(Vector2Int.left);
                         Console.WriteLine("moving left");
                         break;
                     }
 
                 case 1:
                     {
-                        index = index.AddVector(Vector2.up);
+                        index = index.AddVector(Vector2Int.up);
                         Console.WriteLine("moving up");
                         break;
                     }
@@ -174,14 +212,14 @@ namespace Engine
 
                 case 2:
                     {
-                        index = index.AddVector(Vector2.right);
+                        index = index.AddVector(Vector2Int.right);
                         Console.WriteLine("moving right");
                         break;
                     }
 
                 case 3:
                     {
-                        index = index.AddVector(Vector2.down);
+                        index = index.AddVector(Vector2Int.down);
                         Console.WriteLine("moving down");
                         break;
                     }

@@ -89,7 +89,7 @@ namespace Engine
             duoColorCount = 2;
         }
 
-        int ApplyDuoColor(Vector2 index)
+        int ApplyDuoColor(Vector2Int index)
         {
             return (int)((index.x + index.y) % duoColorCount);
         }
@@ -107,7 +107,7 @@ namespace Engine
             throw new NotImplementedException();
         }
 
-        public override void Move(Vector2 availableMove)
+        public override Vector2Int CalculateNewPosition(Vector2Int availableMove)
         {
             throw new NotImplementedException();
         }

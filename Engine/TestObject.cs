@@ -18,11 +18,12 @@ namespace Engine
             throw new NotImplementedException();
         }
 
-        public override void Move(Vector2 availableMove)
+        public override Vector2Int CalculateNewPosition(Vector2Int availableMove)
         {
-            throw new NotImplementedException();
+            Position = Position.AddVector(availableMove);
+            return Position;
         }
-       // static public TestObject Sample() { return new TestObject(0,"0"); }
+        // static public TestObject Sample() { return new TestObject(0,"0"); }
 
     }
 }

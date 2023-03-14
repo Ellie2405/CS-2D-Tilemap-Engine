@@ -23,7 +23,7 @@ namespace Engine
         //   // return this;
         //}
 
-        public override void Move(Vector2 availableMove)
+        public override Vector2Int CalculateNewPosition(Vector2Int availableMove)
         {
             throw new NotImplementedException();
         }

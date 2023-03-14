@@ -9,7 +9,7 @@ namespace Engine
 {
     public abstract class Tile
     {
-        public Vector2 indexer { get; protected set; } 
+        public Vector2Int indexer { get; protected set; } 
         public TileObject? tileObject { get; protected set; }
         public enum Actor
         {
@@ -26,26 +26,25 @@ namespace Engine
         }
         public State state = State.Empty;
 
-        //public Tile(Vector2 position)
-        //{
-        //    this.position = position;
-        //}
-
-        public void IndexerSetter(Vector2 index)
+        public void SetIndexer(Vector2Int index)
         {
             indexer = index;
         }
 
-        public void TileObjectSetter(TileObject to)
+        public void SetObjectToTile(TileObject to) 
         {
             tileObject = to;
             state = State.Occupied;
         }
 
-        public void TileObjectRemover()
+        public void RemoveObjectFromTile()
         {
             tileObject = null;
         }
 
+        public void PassedCallBack() //eat
+        {
+            tileObject = null;
+        }
     }
 }

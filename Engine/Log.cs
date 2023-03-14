@@ -15,28 +15,24 @@ namespace Engine
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine($"[MSG] - {msg}");
             Console.ForegroundColor = ConsoleColor.White;
-            Console.SetCursorPosition(0, 30);
         }
         public static void InfoMessage(string msg)
         {
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine($"[INFO] - {msg}");
             Console.ForegroundColor = ConsoleColor.White;
-            Console.SetCursorPosition(0, 30);
         }
         public static void WarningMessage(string msg)
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine($"[WARNING] - {msg}");
             Console.ForegroundColor = ConsoleColor.White;
-            Console.SetCursorPosition(0, 30);
         }
         public static void ErrorMessage(string msg)
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine($"[ERROR] - {msg}");
             Console.ForegroundColor = ConsoleColor.White;
-            Console.SetCursorPosition(0, 30);
         }
     }
 }

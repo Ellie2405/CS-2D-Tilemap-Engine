@@ -11,61 +11,55 @@ namespace Engine
     public abstract class TileObject : ICloneable
     {
         public string ID { get; protected set; }
+        public Vector2Int Position { get; protected set; }
+
+
         public enum Actor
         {
             Player1,
             Player2
         }
-        //protected Actor actor;
+
         public Actor ObjectActor { get; protected set; }
 
-        private List<Vector2> moves;
+        public Dictionary<string, Vector2Int> moves = new Dictionary<string, Vector2Int>();
 
-      //  public TileObject(int actorNum, string iD)
-      //  {
-      //      ID = iD;
-      //      if (actorNum == 1) actor = Actor.Player1;
-      //      else if (actorNum == 2) actor = Actor.Player2;
-      //      Log.InfoMessage($"A new object was created - {actor}, ID : {ID}");
-      //  }
 
-        public void ObjectSetter(int actorNum, string iD)
+        public void ObjectSetter(int actorNum, string iD, Vector2Int position)
         {
+            Position = position;
             ID = iD;
             if (actorNum == 1) ObjectActor = Actor.Player1;
             else if (actorNum == 2) ObjectActor = Actor.Player2;
             Log.InfoMessage($"A new object was created - {ObjectActor}, ID : {ID}");
         }
 
-        public abstract void Move(Vector2 availableMove);
-
-        public virtual void AddMove(Vector2 move)
+        public virtual Vector2Int CalculateNewPosition(Vector2Int availableMove)
         {
-            moves.Add(move);
+            return Position.AddVector(availableMove);
         }
 
-        public virtual void AddMoves(List<Vector2> moveSet)
+        public void SetPosition(Vector2Int position)
         {
-            moves.AddRange(moveSet);
+            Position = position;
         }
 
-        public virtual void PassedCallBack()
+        public virtual void AddMove(string moveName, Vector2Int move)
         {
-            Log.RegularMessage($"{this.ID} had a tile object passed on it.");
+            moves.Add(moveName, move);
         }
 
-        public virtual void SteppedCallBack(Tile tile)
+        public virtual void SteppedCallBack(Tile tile) // set object and or change object to queen
         {
-            if(tile.tileObject == null) tile.TileObjectSetter(this);
-            //else interact with current tile object
-            Log.RegularMessage($"{this.ID} has stepped on a tile at index of {tile.indexer}");
+            if (tile.tileObject == null) tile.SetObjectToTile(this);
+
+            else if (tile.tileObject == null && tile.indexer.y == 1 || tile.tileObject == null && tile.indexer.y == 8)
+            {
+                
+            }
         }
 
         public abstract object Clone();
 
-        public void Fct()
-        {
-            //return an object
-        }
     }
 }
