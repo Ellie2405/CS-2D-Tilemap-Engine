@@ -19,8 +19,9 @@ namespace Engine
             ConsoleColor.White,
             ConsoleColor.Black,
         };
-        static char bracketSign = ' ';
-        ConsoleColor BGColor = ConsoleColor.Black;
+        static char bracketSignOpen = ' ';
+        static char bracketSignClose = ' ';
+        ConsoleColor selectionColor = ConsoleColor.Yellow;
         ConsoleColor tileTextColor = ConsoleColor.Gray;
         ConsoleColor objectTextColor = ConsoleColor.Gray;
         char objectSign = ' ';
@@ -38,14 +39,11 @@ namespace Engine
 
         public void Print(int duoColorIndex, int actorIndex)
         {
-
             Console.BackgroundColor = BoardColors[duoColorIndex];
-            Console.ForegroundColor = BGColor;
-            Console.Write(bracketSign);
             Console.ForegroundColor = TeamColors[actorIndex];
+            Console.Write(bracketSignOpen);
             Console.Write(objectSign);
-            Console.ForegroundColor = BGColor;
-            Console.Write(bracketSign);
+            Console.Write(bracketSignClose);
             Console.BackgroundColor = default;
             Console.ForegroundColor = objectTextColor;
         }
@@ -54,8 +52,8 @@ namespace Engine
         {
             Console.BackgroundColor = BoardColors[duoColorIndex];
             Console.ForegroundColor = ConsoleColor.Black;
-            Console.Write(bracketSign+" ");
-            Console.Write(bracketSign);
+            Console.Write(bracketSignOpen + " ");
+            Console.Write(bracketSignClose);
             Console.BackgroundColor = default;
             Console.ForegroundColor = ConsoleColor.Gray;
 
@@ -71,6 +69,13 @@ namespace Engine
         {
             TeamColors[0] = color1;
             TeamColors[1] = color2;
+        }
+
+        static public void SetBracketChars(char a,char b)
+        {
+            bracketSignOpen = a;
+            bracketSignClose = b;
+
         }
 
         public void SignPrint()

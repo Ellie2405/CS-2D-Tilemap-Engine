@@ -13,7 +13,6 @@ namespace Engine
         List<TileRenderer> tileRenderers = new();
 
         int duoColorCount = 1;
-        TileObject _to = new TestObject2();
 
         #region Constructors
 
@@ -69,19 +68,40 @@ namespace Engine
         {
             foreach (var item in map)
             {
-                if (item.tileObject != null)
+                if (item.indexer.Equals(new Vector2Int(2, 3)))//selected?
                 {
-                    //would be nice to have actor as an integer
-                    if (item.tileObject.ObjectActor == TileObject.Actor.Player1)
-                        ObjectSigns[item.tileObject.GetType()].Print(ApplyDuoColor(item.indexer), 0);
-                    else
-                        ObjectSigns[item.tileObject.GetType()].Print(ApplyDuoColor(item.indexer), 1);
+                    EnableRenderSelection();
+                    RenderTile(item);
+                    DisableRenderSelection();
+                    continue;
                 }
-                else TileRenderer.PrintEmpty(ApplyDuoColor(item.indexer));
-
-                if (item.indexer.y == map.gridSize.y)
+                RenderTile(item);
+                if (item.indexer.x == map.gridSize.x)
                     Console.WriteLine();
             }
+        }
+
+        void RenderTile(Tile tile)
+        {
+            if (tile.tileObject != null)
+            {
+                //check if object belongs to player one
+                if (tile.tileObject.ObjectActor == 0)
+                    ObjectSigns[tile.tileObject.GetType()].Print(ApplyDuoColor(tile.indexer), 0);
+                else
+                    ObjectSigns[tile.tileObject.GetType()].Print(ApplyDuoColor(tile.indexer), 1);
+            }
+            else TileRenderer.PrintEmpty(ApplyDuoColor(tile.indexer));
+        }
+
+        void EnableRenderSelection()
+        {
+            TileRenderer.SetBracketChars('[', ']');
+        }
+
+        void DisableRenderSelection()
+        {
+            TileRenderer.SetBracketChars(' ', ' ');
         }
 
         void EnableDuoColor()
@@ -100,16 +120,4 @@ namespace Engine
         }
     }
 
-    class SomeObject : TileObject
-    {
-        public override object Clone()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Vector2Int CalculateNewPosition(Vector2Int availableMove)
-        {
-            throw new NotImplementedException();
-        }
-    }
 }
