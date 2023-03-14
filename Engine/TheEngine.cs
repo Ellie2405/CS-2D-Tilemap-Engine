@@ -36,9 +36,16 @@ namespace Engine
 
         public Tilemap<RectangleTile> map = new Tilemap<RectangleTile>(new Vector2Int(8, 8));
 
-        public void CreateObject(Vector2Int tileIndex, int actor)
+        public void CreateRegularPiece(Vector2Int tileIndex, int actor)
         {
             RegularPiece m = factory.TileObjectFacroty<RegularPiece>();
+            m.ObjectSetter(actor, "test1", new Vector2Int(tileIndex.x, tileIndex.y));
+            map.GetTileByIndexer(tileIndex).SetObjectToTile(m);
+        }
+
+        public void CreateQueenPiece(Vector2Int tileIndex, int actor)
+        {
+            QueenPiece m = factory.TileObjectFacroty<QueenPiece>();
             m.ObjectSetter(actor, "test1", new Vector2Int(tileIndex.x, tileIndex.y));
             map.GetTileByIndexer(tileIndex).SetObjectToTile(m);
         }
@@ -50,8 +57,10 @@ namespace Engine
             else if (to.ObjectActor == TileObject.Actor.Player2) actor = 2;
             string id = to.ID;
             Vector2Int index = new Vector2Int(to.Position.x, to.Position.y);
+
             QueenPiece qp = factory.TileObjectFacroty<QueenPiece>();
             Tile t = map.GetTileByIndexer(index);
+
             t.RemoveObjectFromTile();
             qp.ObjectSetter(actor, id, index);
             t.SetObjectToTile(qp);
@@ -59,30 +68,32 @@ namespace Engine
 
         public void Start()
         {
-            CreateObject(new Vector2Int(2, 1), 1);
-            CreateObject(new Vector2Int(4, 1), 1);
-            CreateObject(new Vector2Int(6, 1), 1);
-            CreateObject(new Vector2Int(8, 1), 1);
-            CreateObject(new Vector2Int(1, 2), 1);
-            CreateObject(new Vector2Int(3, 2), 1);
-            CreateObject(new Vector2Int(5, 2), 1);
-            CreateObject(new Vector2Int(7, 2), 1);
-            CreateObject(new Vector2Int(2, 3), 1);
-            CreateObject(new Vector2Int(4, 3), 1);
-            CreateObject(new Vector2Int(6, 3), 1);
-            CreateObject(new Vector2Int(8, 3), 1);
-            CreateObject(new Vector2Int(1, 6), 2);
-            CreateObject(new Vector2Int(3, 6), 2);
-            CreateObject(new Vector2Int(5, 6), 2);
-            CreateObject(new Vector2Int(7, 6), 2);
-            CreateObject(new Vector2Int(2, 7), 2);
-            CreateObject(new Vector2Int(4, 7), 2);
-            CreateObject(new Vector2Int(6, 7), 2);
-            CreateObject(new Vector2Int(8, 7), 2);
-            CreateObject(new Vector2Int(1, 8), 2);
-            CreateObject(new Vector2Int(3, 8), 2);
-            CreateObject(new Vector2Int(5, 8), 2);
-            CreateObject(new Vector2Int(7, 8), 2);
+            //CreateObject(new Vector2Int(2, 1), 1);
+            //CreateObject(new Vector2Int(4, 1), 1);
+            //CreateObject(new Vector2Int(6, 1), 1);
+            //CreateObject(new Vector2Int(8, 1), 1);
+            //CreateObject(new Vector2Int(1, 2), 1);
+            //CreateObject(new Vector2Int(3, 2), 1);
+            //CreateObject(new Vector2Int(5, 2), 1);
+            //CreateObject(new Vector2Int(7, 2), 1);
+            //CreateObject(new Vector2Int(2, 3), 1);
+            //CreateObject(new Vector2Int(4, 3), 1);
+            //CreateObject(new Vector2Int(6, 3), 1);
+            //CreateObject(new Vector2Int(8, 3), 1);
+            //CreateObject(new Vector2Int(1, 6), 2);
+            //CreateObject(new Vector2Int(3, 6), 2);
+            //CreateObject(new Vector2Int(5, 6), 2);
+            //CreateObject(new Vector2Int(7, 6), 2);
+            //CreateObject(new Vector2Int(2, 7), 2);
+            //CreateObject(new Vector2Int(4, 7), 2);
+            //CreateObject(new Vector2Int(6, 7), 2);
+            //CreateObject(new Vector2Int(8, 7), 2);
+            //CreateObject(new Vector2Int(1, 8), 2);
+            //CreateObject(new Vector2Int(3, 8), 2);
+            //CreateObject(new Vector2Int(5, 8), 2);
+            //CreateObject(new Vector2Int(7, 8), 2);
+            CreateQueenPiece(new Vector2Int(6, 5), 1);
+            CreateRegularPiece(new Vector2Int(4, 3), 2);
         }
 
         public void MoveTileObject(Vector2Int startPos, Vector2Int move)
@@ -100,10 +111,15 @@ namespace Engine
 
             t.RemoveObjectFromTile();
 
+            if (map.CheckForTileObject(newPosition.AddVector(StepBack(move)))) map.GetTileByIndexer(newPosition.AddVector(StepBack(move))).PassedCallBack();
 
 
-            //if (move.x > 1 && move.y > 1) map.GetTileByIndexer(new Vector2Int(startPos.x + 1, startPos.y + 1)).PassedCallBack();
 
+        }
+
+        public Vector2Int StepBack(Vector2Int vector)
+        {
+            return new Vector2Int(Math.Abs(vector.x) / -vector.x, Math.Abs(vector.y) / -vector.y);
         }
     }
 }

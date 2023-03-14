@@ -73,6 +73,23 @@ namespace Engine
             throw new Exception("Tile doesnt exist or Tile object is null");
         }
 
+        public bool CheckForTileObject(Vector2Int index)
+        {
+            foreach (var item in grid)
+            {
+                if (item.indexer.x == index.x && item.indexer.y == index.y && item.tileObject != null) return true;
+
+                else if (item.indexer.x == index.x && item.indexer.y == index.y && item.tileObject == null) return false;              
+            }
+            return false;
+
+            //if (grid[index.x + 1, index.y + 1].tileObject == null) return false;
+
+            //else if (grid[index.x + 1, index.y + 1].tileObject != null) return true;
+
+            //else return false;
+        }
+
         public IEnumerator<Tile> GetEnumerator()
         {
             return new TilemapEnumerator<Tile>(grid);

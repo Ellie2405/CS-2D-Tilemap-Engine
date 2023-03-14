@@ -22,12 +22,12 @@ namespace Engine
         public override object Clone()
         {
             var item = new RegularPiece()
-                        {
-                         ObjectActor = ObjectActor,
-                          Position = Position,
-                          ID = ID,
-                          moves = moves
-                        };
+            {
+                ObjectActor = ObjectActor,
+                Position = Position,
+                ID = ID,
+                moves = moves
+            };
             return item;
         }
 
