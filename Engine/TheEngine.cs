@@ -45,7 +45,9 @@ namespace Engine
 
         public void ConvertRegularPiece(TileObject to)
         {
-            int actor = (int)to.ObjectActor;
+            int actor = 0;
+            if (to.ObjectActor == TileObject.Actor.Player1) actor = 1;
+            else if (to.ObjectActor == TileObject.Actor.Player2) actor = 2;
             string id = to.ID;
             Vector2Int index = new Vector2Int(to.Position.x, to.Position.y);
             QueenPiece qp = factory.TileObjectFacroty<QueenPiece>();
@@ -69,18 +71,18 @@ namespace Engine
             CreateObject(new Vector2Int(4, 3), 1);
             CreateObject(new Vector2Int(6, 3), 1);
             CreateObject(new Vector2Int(8, 3), 1);
-            //CreateObject(new Vector2Int(1, 6), 2);
-            //CreateObject(new Vector2Int(3, 6), 2);
-            //CreateObject(new Vector2Int(5, 6), 2);
-            //CreateObject(new Vector2Int(7, 6), 2);
-            //CreateObject(new Vector2Int(2, 7), 2);
-            //CreateObject(new Vector2Int(4, 7), 2);
-            //CreateObject(new Vector2Int(6, 7), 2);
-            //CreateObject(new Vector2Int(8, 7), 2);
-            //CreateObject(new Vector2Int(1, 8), 2);
-            //CreateObject(new Vector2Int(3, 8), 2);
-            //CreateObject(new Vector2Int(5, 8), 2);
-            //CreateObject(new Vector2Int(7, 8), 2);
+            CreateObject(new Vector2Int(1, 6), 2);
+            CreateObject(new Vector2Int(3, 6), 2);
+            CreateObject(new Vector2Int(5, 6), 2);
+            CreateObject(new Vector2Int(7, 6), 2);
+            CreateObject(new Vector2Int(2, 7), 2);
+            CreateObject(new Vector2Int(4, 7), 2);
+            CreateObject(new Vector2Int(6, 7), 2);
+            CreateObject(new Vector2Int(8, 7), 2);
+            CreateObject(new Vector2Int(1, 8), 2);
+            CreateObject(new Vector2Int(3, 8), 2);
+            CreateObject(new Vector2Int(5, 8), 2);
+            CreateObject(new Vector2Int(7, 8), 2);
         }
 
         public void MoveTileObject(Vector2Int startPos, Vector2Int move)
@@ -97,8 +99,6 @@ namespace Engine
             to.SteppedCallBack(t2);
 
             t.RemoveObjectFromTile();
-
-            //t2.SetObjectToTile(to);
 
 
 
