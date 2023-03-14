@@ -19,6 +19,7 @@ namespace Engine
             this.y = y;
         }
 
+        //spiral moves
         public static Vector2Int up => new Vector2Int(0, 1);
         public static Vector2Int down => new Vector2Int(0, -1);
         public static Vector2Int right => new Vector2Int(1, 0);
@@ -62,18 +63,6 @@ namespace Engine
         public static Vector2Int leftDiagonalDown5 => new Vector2Int(-5, 5);
         public static Vector2Int leftDiagonalDown6 => new Vector2Int(-6, 6);
         public static Vector2Int leftDiagonalDown7 => new Vector2Int(-7, 7);
-
-
-
-
-
-
-        //public static Vector2Int GenerateRightDiagonalUp(int i) => new Vector2Int(i, -i);
-        //public static Vector2Int GenerateLeftDiagonalUp(int i) => new Vector2Int(-i, -i);
-        //public static Vector2Int GenerateRightDiagonalDown(int i) => new Vector2Int(i, i);
-        //public static Vector2Int GenerateLeftDiagonalDown(int i) => new Vector2Int(-i, i);
-
-
 
         public override string ToString()
         {

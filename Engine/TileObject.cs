@@ -10,6 +10,8 @@ namespace Engine
 {
     public abstract class TileObject : ICloneable
     {
+        public static Action<TileObject> onSteppedCallback;
+
         public string ID { get; protected set; }
         public Vector2Int Position { get; protected set; }
 
@@ -31,7 +33,6 @@ namespace Engine
             ID = iD;
             if (actorNum == 1) ObjectActor = Actor.Player1;
             else if (actorNum == 2) ObjectActor = Actor.Player2;
-            Log.InfoMessage($"A new object was created - {ObjectActor}, ID : {ID}");
         }
 
         public virtual Vector2Int CalculateNewPosition(Vector2Int availableMove)
@@ -51,12 +52,23 @@ namespace Engine
 
         public virtual void SteppedCallBack(Tile tile) // set object and or change object to queen
         {
-            if (tile.tileObject == null) tile.SetObjectToTile(this);
 
-            else if (tile.tileObject == null && tile.indexer.y == 1 || tile.tileObject == null && tile.indexer.y == 8)
+            if (tile.tileObject == null && tile.indexer.y == 8 || tile.tileObject == null && tile.indexer.y == 1)
             {
-                
+                onSteppedCallback?.Invoke(this);
+                Console.WriteLine("invoked callback");
             }
+
+            else if (tile.tileObject == null)
+            {
+                tile.SetObjectToTile(this);
+            }
+
+            else if (tile.tileObject != null)
+            {
+                Console.WriteLine("tile object isnt null");
+            }
+
         }
 
         public abstract object Clone();

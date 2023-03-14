@@ -18,9 +18,12 @@ namespace Engine
         }
         public static void InfoMessage(string msg)
         {
+            //Console.SetCursorPosition(0, 20);
+            //Console.WriteLine("--------------------------------------------------");
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine($"[INFO] - {msg}");
             Console.ForegroundColor = ConsoleColor.White;
+            Console.SetCursorPosition(0, 0);
         }
         public static void WarningMessage(string msg)
         {

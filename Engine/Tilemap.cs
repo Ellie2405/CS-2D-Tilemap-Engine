@@ -26,8 +26,13 @@ namespace Engine
             foreach (var item in grid)
             {
                 item.SetIndexer(indexValue);
-                if (indexValue.y < grid.GetLength(1)) indexValue = new Vector2Int(indexValue.x, indexValue.y + 1);
-                else if (indexValue.y == grid.GetLength(1)) indexValue = new Vector2Int(indexValue.x + 1, 1);
+                //if (indexValue.y < grid.GetLength(1)) indexValue = new Vector2Int(indexValue.x, indexValue.y + 1);
+                //else if (indexValue.y == grid.GetLength(1)) indexValue = new Vector2Int(indexValue.x + 1, 1);
+                
+                indexValue = new Vector2Int(indexValue.x +1, indexValue.y);
+                
+                if (indexValue.x == grid.GetLength(0) + 1) indexValue = new Vector2Int(1, indexValue.y + 1);
+
             }
 
             GetEnumerator();
@@ -36,16 +41,12 @@ namespace Engine
 
         public void InjectTiles(Vector2Int gridSize, Tile[,] grid)
         {
-            Vector2Int tilePos = new Vector2Int(30, 0);
             for (int i = 0; i < gridSize.x; i++)
             {
-                tilePos = new Vector2Int(tilePos.x, tilePos.y + 30);
 
                 for (int j = 0; j < gridSize.y; j++)
                 {                    
                     grid[i, j] = new T();
-                    tilePos = new Vector2Int(tilePos.x + 30, tilePos.y);
-                    Log.InfoMessage($"A rectangle tile was injected at {grid[i, j].indexer}.");
                 }
             }
             Log.InfoMessage("The tile map finished configuring.");
@@ -71,33 +72,6 @@ namespace Engine
 
             throw new Exception("Tile doesnt exist or Tile object is null");
         }
-
-        public void MoveTileObject(Vector2Int startPos, Vector2Int move)
-        {
-            TileObject to = GetTileObjectByTileIndexer(startPos);
-            Tile t = GetTileByIndexer(startPos);
-
-            Vector2Int newPosition = to.CalculateNewPosition(move);
-            to.SetPosition(newPosition);
-            //Console.WriteLine($"object at {startPos}");
-            //Console.WriteLine($"will move to {newPosition}");
-
-            Tile t2 = GetTileByIndexer(newPosition);
-            to = to.Clone() as TileObject;
-
-            if (move.x > 1 && move.y > 1) GetTileByIndexer(new Vector2Int(startPos.x + 1, startPos.y + 1)).PassedCallBack();
-
-            t2.SetObjectToTile(to);
-            t.RemoveObjectFromTile();
-            
-            //GetTileObjectByTileIndexer(newPosition).SteppedCallBack(GetTileByIndexer(newPosition)); // needs rework
-
-
-            // need to add movement logic - limit to board indexer and to other objects on board
-        }
-
-
-
 
         public IEnumerator<Tile> GetEnumerator()
         {
