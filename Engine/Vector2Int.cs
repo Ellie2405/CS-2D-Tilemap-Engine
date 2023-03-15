@@ -89,5 +89,15 @@ namespace Engine
         {
             return new Vector2Int(this.x - vector.x, this.y - vector.y);
         }
+
+        public static Vector2Int operator +(Vector2Int vector, Vector2Int vector2)
+        {
+            return new Vector2Int(vector.x + vector2.x, vector.y + vector2.y);
+        }
+
+        public static Vector2Int operator -(Vector2Int vector, Vector2Int vector2)
+        {
+            return new Vector2Int(vector.x - vector2.x, vector.y - vector2.y);
+        }
     }
 }
