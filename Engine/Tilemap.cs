@@ -18,21 +18,15 @@ namespace Engine
 
         public Tilemap(Vector2Int gridSize)
         {
-            grid = new T[(int)gridSize.x, (int)gridSize.y];
+            grid = new T[gridSize.x, gridSize.y];
             InjectTiles(gridSize, grid);
             this.gridSize = gridSize;
-
 
             foreach (var item in grid)
             {
                 item.SetIndexer(indexValue);
-                //if (indexValue.y < grid.GetLength(1)) indexValue = new Vector2Int(indexValue.x, indexValue.y + 1);
-                //else if (indexValue.y == grid.GetLength(1)) indexValue = new Vector2Int(indexValue.x + 1, 1);
-                
                 indexValue = new Vector2Int(indexValue.x +1, indexValue.y);
-                
                 if (indexValue.x == grid.GetLength(0) + 1) indexValue = new Vector2Int(1, indexValue.y + 1);
-
             }
 
             GetEnumerator();
@@ -43,13 +37,11 @@ namespace Engine
         {
             for (int i = 0; i < gridSize.x; i++)
             {
-
                 for (int j = 0; j < gridSize.y; j++)
                 {                    
                     grid[i, j] = new T();
                 }
             }
-            Log.InfoMessage("The tile map finished configuring.");
         }
 
 
@@ -82,12 +74,6 @@ namespace Engine
                 else if (item.indexer.x == index.x && item.indexer.y == index.y && item.tileObject == null) return false;              
             }
             return false;
-
-            //if (grid[index.x + 1, index.y + 1].tileObject == null) return false;
-
-            //else if (grid[index.x + 1, index.y + 1].tileObject != null) return true;
-
-            //else return false;
         }
 
         public IEnumerator<Tile> GetEnumerator()

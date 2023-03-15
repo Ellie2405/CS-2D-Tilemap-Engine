@@ -9,8 +9,6 @@ namespace Engine
     internal class Todo
     {
         //commands - ellie/all
-        //convert tilemap to event based - alon
-        //move injectTiles to engine and use factory - alon
         //create game loop - tal
         //redo vector2int getHashCode - all
         //do all mazochist - all

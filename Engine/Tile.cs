@@ -11,6 +11,7 @@ namespace Engine
     {
         public Vector2Int indexer { get; protected set; } 
         public TileObject? tileObject { get; protected set; }
+        
         public enum Actor
         {
             Player1,
@@ -31,20 +32,21 @@ namespace Engine
             indexer = index;
         }
 
+        public void SetTileState(State state)
+        {
+            this.state = state;
+        }
+
         public void SetObjectToTile(TileObject to) 
         {
             tileObject = to;
             state = State.Occupied;
         }
 
-        public void RemoveObjectFromTile()
+        public void PassedCallBack() //eaten
         {
             tileObject = null;
-        }
-
-        public void PassedCallBack() //eat
-        {
-            tileObject = null;
+            state = State.Empty;
         }
     }
 }

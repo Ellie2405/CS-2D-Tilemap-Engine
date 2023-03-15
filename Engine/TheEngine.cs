@@ -15,20 +15,13 @@ namespace Engine
         {
             factory = new Factory();
         }
-
-        //public void SetTileObject(TileObject obj, Vector2 pos)
-        //{
-        //    obj.Position = pos;
-        //}
     }
 
-    class TestEngine : TheEngine
-    {
-
-    }
+  
 
     class CheckersEngine : TheEngine
     {
+        public static Action OnPassedTile;
         public CheckersEngine()
         {
             TileObject.onSteppedCallback += ConvertRegularPiece;
@@ -36,19 +29,27 @@ namespace Engine
 
         public Tilemap<RectangleTile> map = new Tilemap<RectangleTile>(new Vector2Int(8, 8));
 
+
+
         public void CreateRegularPiece(Vector2Int tileIndex, int actor)
         {
             RegularPiece m = factory.TileObjectFacroty<RegularPiece>();
             m.ObjectSetter(actor, "test1", new Vector2Int(tileIndex.x, tileIndex.y));
-            map.GetTileByIndexer(tileIndex).SetObjectToTile(m);
+
+            Tile t = map.GetTileByIndexer(tileIndex);
+            t.SetObjectToTile(m);
         }
 
         public void CreateQueenPiece(Vector2Int tileIndex, int actor)
         {
             QueenPiece m = factory.TileObjectFacroty<QueenPiece>();
             m.ObjectSetter(actor, "test1", new Vector2Int(tileIndex.x, tileIndex.y));
-            map.GetTileByIndexer(tileIndex).SetObjectToTile(m);
+
+            Tile t = map.GetTileByIndexer(tileIndex);
+            t.SetObjectToTile(m);
         }
+
+
 
         public void ConvertRegularPiece(TileObject to)
         {
@@ -61,7 +62,7 @@ namespace Engine
             QueenPiece qp = factory.TileObjectFacroty<QueenPiece>();
             Tile t = map.GetTileByIndexer(index);
 
-            t.RemoveObjectFromTile();
+            t.PassedCallBack();
             qp.ObjectSetter(actor, id, index);
             t.SetObjectToTile(qp);
         }
@@ -102,6 +103,7 @@ namespace Engine
             Tile t = map.GetTileByIndexer(startPos);
 
             Vector2Int newPosition = to.CalculateNewPosition(move);
+            
             to.SetPosition(newPosition);
 
             Tile t2 = map.GetTileByIndexer(newPosition);
@@ -109,17 +111,50 @@ namespace Engine
 
             to.SteppedCallBack(t2);
 
-            t.RemoveObjectFromTile();
+            t.PassedCallBack();
 
             if (map.CheckForTileObject(newPosition.AddVector(StepBack(move)))) map.GetTileByIndexer(newPosition.AddVector(StepBack(move))).PassedCallBack();
-
-
-
         }
 
         public Vector2Int StepBack(Vector2Int vector)
         {
             return new Vector2Int(Math.Abs(vector.x) / -vector.x, Math.Abs(vector.y) / -vector.y);
+        }
+
+        public bool ValidateMove(Vector2Int startPos, Vector2Int move)
+        {
+            TileObject to = map.GetTileObjectByTileIndexer(startPos);
+            Tile t = map.GetTileByIndexer(startPos);
+            Vector2Int newPosition = to.CalculateNewPosition(move);
+            Tile t2 = map.GetTileByIndexer(newPosition);
+
+
+            if (to is RegularPiece && to.ObjectActor == TileObject.Actor.Player1 
+                && newPosition.y! < startPos.y && t2.tileObject == null 
+                && newPosition.x <= map.gridSize.x && newPosition.y <= newPosition.y
+                && newPosition.x <= 0 && newPosition.y <= 0)
+            {
+                MoveTileObject(startPos, move);
+                return true;
+            }
+
+
+            else if (to is RegularPiece && to.ObjectActor == TileObject.Actor.Player2
+                && newPosition.y! > startPos.y && t2.tileObject == null
+                && newPosition.x <= map.gridSize.x && newPosition.y <= newPosition.y
+                && newPosition.x <= 0 && newPosition.y <= 0)
+            {
+                MoveTileObject(startPos, move);
+                return true;
+            }
+
+
+            else if(to is QueenPiece && t2.tileObject == null)
+            {
+                MoveTileObject(startPos, move);
+            }
+
+            return false;
         }
     }
 }
