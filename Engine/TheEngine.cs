@@ -54,8 +54,9 @@ namespace Engine
             //CreateObject(new Vector2Int(5, 8), 2);
             //CreateObject(new Vector2Int(7, 8), 2);
             CreateTileMap<Tilemap<RectangleTile>>();
-            CreateTileObject<QueenPiece>(new Vector2Int(6, 5), 1);
-            CreateTileObject<RegularPiece>(new Vector2Int(4, 3), 2);
+            CreateTileObject<QueenPiece>(new Vector2Int(6, 3), 1);
+            CreateTileObject<RegularPiece>(new Vector2Int(4, 5), 1);
+            CreateTileObject<RegularPiece>(new Vector2Int(3, 6), 2);
         }
 
         public void Update()
@@ -138,31 +139,43 @@ namespace Engine
             t2 = map.GetTileByIndexer(newPosition);
 
 
-
-
-
-
             if
                 (to is RegularPiece && to.ObjectActor == TileObject.Actor.Player1
-                && newPosition.y! < startPos.y && t2.tileObject == null
-                && newPosition.x <= map.gridSize.x && newPosition.y <= newPosition.y
-                && newPosition.x <= 0 && newPosition.y <= 0
+                && newPosition.y > startPos.y && t2.tileObject == null
                 && t2.state != Tile.State.Hole) // last condition is movement mazochist
             {
-                MoveTileObject(startPos, move);
-                return true;
+                if (move.Equals(Vector2Int.leftDiagonalDownEat)
+                    || move.Equals(Vector2Int.rightDiagonalDownEat))
+                {
+                    if (map.CheckForTileObject(newPosition.AddVector(StepBack(move))))
+                    {
+                        if(map.GetTileObjectByTileIndexer(newPosition.AddVector(StepBack(move))).ObjectActor == TileObject.Actor.Player2) 
+                            return true;
+                    }
+                    else return false;
+                }
+                else return true;
+                //MoveTileObject(startPos, move);
             }
 
 
             else if
                 (to is RegularPiece && to.ObjectActor == TileObject.Actor.Player2
-                && newPosition.y! > startPos.y && t2.tileObject == null
-                && newPosition.x <= map.gridSize.x && newPosition.y <= newPosition.y
-                && newPosition.x <= 0 && newPosition.y <= 0
+                && newPosition.y < startPos.y && t2.tileObject == null
                 && t2.state != Tile.State.Hole)
             {
-                MoveTileObject(startPos, move);
-                return true;
+                if (move.Equals(Vector2Int.leftDiagonalUpEat)
+                    || move.Equals(Vector2Int.rightDiagonalUpEat))
+                {
+                    if (map.CheckForTileObject(newPosition.AddVector(StepBack(move))))
+                    {
+                        if (map.GetTileObjectByTileIndexer(newPosition.AddVector(StepBack(move))).ObjectActor == TileObject.Actor.Player1)
+                            return true;
+                    }
+                    else return false;
+                }
+                else return true;
+                //MoveTileObject(startPos, move);
             }
 
 
@@ -224,7 +237,7 @@ namespace Engine
             {
                 if (ValidateMove(to.Position, item.Value))
                 {
-                    validPositions.Add(to.Position+item.Value);
+                    validPositions.Add(to.Position + item.Value);
                     Console.WriteLine(item.Value);
                 }
             }
