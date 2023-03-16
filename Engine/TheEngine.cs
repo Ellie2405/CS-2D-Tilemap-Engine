@@ -25,7 +25,7 @@ namespace Engine
 
         public Tilemap<RectangleTile> map;
         public TileObject? selectedObject;
-        List<Vector2Int> validMoves = new List<Vector2Int>();
+        static public List<Vector2Int> validPositions = new List<Vector2Int>();
 
         public void Start()
         {
@@ -224,7 +224,8 @@ namespace Engine
             {
                 if (ValidateMove(to.Position, item.Value))
                 {
-                    validMoves.Add(item.Value);
+                    validPositions.Add(to.Position+item.Value);
+                    Console.WriteLine(item.Value);
                 }
             }
         }

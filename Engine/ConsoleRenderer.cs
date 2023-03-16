@@ -73,11 +73,8 @@ namespace Engine
             {
                 foreach (var item in map)
                 {
-                    if (item.indexer.Equals(new Vector2Int(2, 1)))//if something is selected
-                    {
-                        if (true)//check if this tile is a viable move
-                            RenderHighlight(item);
-                    }
+                    if (CheckHighlights(item))
+                        RenderHighlight(item);
                     else if (item.indexer.Equals(TheEngine.indexer))//if this is the selected tile
                     {
                         EnableRenderSelection();
@@ -112,8 +109,8 @@ namespace Engine
                         }
                         else heightIterator = 0;
                     }
-                }    
-            }        
+                }
+            }
         }
 
         void RenderTile(Tile tile)
@@ -125,9 +122,21 @@ namespace Engine
                 //    ObjectSigns[tile.tileObject.GetType()].Print(ApplyDuoColor(tile.indexer), 0);
                 //else
                 //    ObjectSigns[tile.tileObject.GetType()].Print(ApplyDuoColor(tile.indexer), 1);
-                    ObjectSigns[tile.tileObject.GetType()].Print(ApplyDuoColor(tile.indexer), (int)tile.tileObject.ObjectActor);
+                ObjectSigns[tile.tileObject.GetType()].Print(ApplyDuoColor(tile.indexer), (int)tile.tileObject.ObjectActor);
             }
             else TileRenderer.PrintEmpty(ApplyDuoColor(tile.indexer));
+        }
+
+        bool CheckHighlights(Tile tile)
+        {
+            foreach (var move in CheckersEngine.validPositions)
+            {
+                if (tile.indexer.Equals(move))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         void RenderHighlight(Tile tile)
