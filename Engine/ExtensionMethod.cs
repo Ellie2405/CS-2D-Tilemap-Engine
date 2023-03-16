@@ -33,5 +33,11 @@ namespace Engine
                 return true;
             return false;
         }
+
+        public static int BoolToInt(this bool boolean)
+        {
+            if (boolean) return 1;
+            else return 0;
+        }
     }
 }
