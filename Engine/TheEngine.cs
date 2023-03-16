@@ -9,7 +9,30 @@ namespace Engine
 {
     abstract class TheEngine
     {
+        public static Vector2Int indexer { get; protected set; } = new(1, 1);
 
+        public virtual void GetInput()
+        {
+            ConsoleKey i = Console.ReadKey().Key;
+
+            switch(i)
+            {
+                case ConsoleKey.UpArrow:
+                    indexer = new Vector2Int(indexer.x, indexer.y - 1);
+                    break; 
+                case ConsoleKey.DownArrow:
+                    indexer = new Vector2Int(indexer.x, indexer.y + 1);
+                    break;
+                case ConsoleKey.LeftArrow:
+                    indexer = new Vector2Int(indexer.x + 1, indexer.y);
+                    break;
+                case ConsoleKey.RightArrow:
+                    indexer = new Vector2Int(indexer.x - 1, indexer.y);
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
 
@@ -149,6 +172,20 @@ namespace Engine
             }
 
             return false;
+        }
+
+        public override void GetInput()
+        {
+            base.GetInput();
+
+            if (indexer.x > map.gridSize.x)
+                indexer = new Vector2Int(map.gridSize.x, indexer.y);
+            else if (indexer.x < map.gridSize.x)
+                indexer = new Vector2Int(1, indexer.y);
+            else if (indexer.y > map.gridSize.y)
+                indexer = new Vector2Int(indexer.x, map.gridSize.y);
+            else if (indexer.y < map.gridSize.y)
+                indexer = new Vector2Int(indexer.x, 1);
         }
     }
 }
