@@ -21,9 +21,9 @@ namespace Engine
         };
         static char bracketSignOpen = ' ';
         static char bracketSignClose = ' ';
+        static ConsoleColor defaultTextColor = ConsoleColor.Gray;
         ConsoleColor selectionColor = ConsoleColor.Yellow;
         ConsoleColor tileTextColor = ConsoleColor.Gray;
-        ConsoleColor objectTextColor = ConsoleColor.Gray;
         char objectSign = ' ';
 
 
@@ -45,7 +45,7 @@ namespace Engine
             Console.Write(objectSign);
             Console.Write(bracketSignClose);
             Console.BackgroundColor = default;
-            Console.ForegroundColor = objectTextColor;
+            Console.ForegroundColor = defaultTextColor;
         }
 
         static public void PrintEmpty(int duoColorIndex)
@@ -55,7 +55,7 @@ namespace Engine
             Console.Write(bracketSignOpen + " ");
             Console.Write(bracketSignClose);
             Console.BackgroundColor = default;
-            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.ForegroundColor = defaultTextColor;
         }
 
         static public void PrintHightlight(int duoColorIndex)
@@ -68,7 +68,21 @@ namespace Engine
             Console.Write(bracketSignOpen + " ");
             Console.Write(bracketSignClose);
             Console.BackgroundColor = default;
-            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.ForegroundColor = defaultTextColor;
+        }
+
+        public void PrintMaso(int duoColorIndex, int actorIndex)
+        {
+            if (BoardColors[duoColorIndex] == ConsoleColor.Magenta || BoardColors[duoColorIndex] == ConsoleColor.DarkMagenta)
+                Console.BackgroundColor = 15 - BoardColors[duoColorIndex];
+            else
+                Console.BackgroundColor = ConsoleColor.Magenta;
+            Console.ForegroundColor = TeamColors[actorIndex];
+            Console.Write(bracketSignOpen);
+            Console.Write(objectSign);
+            Console.Write(bracketSignClose);
+            Console.BackgroundColor = default;
+            Console.ForegroundColor = defaultTextColor;
         }
 
         static public void SetBoardColor(ConsoleColor color1 = ConsoleColor.White, ConsoleColor color2 = ConsoleColor.DarkGray)

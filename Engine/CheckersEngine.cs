@@ -13,11 +13,13 @@ namespace Engine
         public Tilemap<RectangleTile> map;
         public TileObject? selectedObject;
         static public List<Vector2Int> validPositions = new List<Vector2Int>();
+        static public List<Vector2Int> Moveables = new List<Vector2Int>();
 
+        static public bool player1Turn { get; protected set; } = false;
         public bool isSelecting { get; protected set; } = false;
-        public bool player1Turn { get; protected set; } = false;
         public bool gameAlive { get; protected set; } = true;
         public bool isShowing { get; protected set; } = false;
+
 
         public CheckersEngine()
         {
@@ -65,7 +67,7 @@ namespace Engine
                 GetInput();
                 Console.Clear();
                 renderer.Render(map);
-                CheckBoardForPieces();
+                CheckWin();
 
             }
         }
@@ -194,6 +196,25 @@ namespace Engine
             }
         }
 
+        void CheckMoveables()
+        {
+            foreach (var item in map)
+            {
+                if (item.tileObject != null)
+                {
+                    foreach (var move in item.tileObject.moves)
+                    {
+                        if (ValidateMove(item.indexer, move.Value))
+                        {
+                            Moveables.Add(item.indexer);
+                            Console.WriteLine(item.indexer);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
         public override void GetInput()
         {
             ConsoleKey i = Console.ReadKey().Key;
@@ -238,6 +259,7 @@ namespace Engine
                     {
                         selectedObject = null;
                         validPositions.Clear();
+                        Moveables.Clear();
                         isSelecting = false;
                         isShowing = false;
                     }
@@ -246,7 +268,7 @@ namespace Engine
                 case ConsoleKey.S:
                     {
                         isShowing = true;
-                        //methoda
+                        CheckMoveables();
                     }
                     break;
 
@@ -268,7 +290,7 @@ namespace Engine
 
         }
 
-        public void CheckBoardForPieces()
+        public void CheckWin()
         {
             int p1 = 0;
             int p2 = 0;
@@ -288,5 +310,6 @@ namespace Engine
                 Console.WriteLine("Player 1 wins!");
             }
         }
+
     }
 }

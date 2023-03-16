@@ -73,17 +73,16 @@ namespace Engine
             {
                 foreach (var item in map)
                 {
-                    if (CheckHighlights(item))
-                        RenderHighlight(item);
-                    else if (item.indexer.Equals(TheEngine.indexer))//if this is the selected tile
-                    {
+                    if (item.indexer.Equals(TheEngine.indexer)) //check which tile is hovered over
                         EnableRenderSelection();
-                        RenderTile(item);
-                        DisableRenderSelection();
-                    }
+                    if (CheckHighlights(item)) //check if this tile needs to be highlighted
+                        RenderHighlight(item);
+                    else if (CheckMoveables(item))
+                        RenderMaso(item);
                     else RenderTile(item);
                     if (item.indexer.x == map.gridSize.x)
                         Console.WriteLine();
+                    DisableRenderSelection();
                 }
             }
             //large tile render logic
@@ -111,17 +110,13 @@ namespace Engine
                     }
                 }
             }
+            Console.WriteLine($"{TileRenderer.BoardColors[CheckersEngine.player1Turn.BoolToInt()]} turn");
         }
 
         void RenderTile(Tile tile)
         {
             if (tile.tileObject != null)
             {
-                //check if object belongs to player one
-                //if (tile.tileObject.ObjectActor == 0)
-                //    ObjectSigns[tile.tileObject.GetType()].Print(ApplyDuoColor(tile.indexer), 0);
-                //else
-                //    ObjectSigns[tile.tileObject.GetType()].Print(ApplyDuoColor(tile.indexer), 1);
                 ObjectSigns[tile.tileObject.GetType()].Print(ApplyDuoColor(tile.indexer), (int)tile.tileObject.ObjectActor);
             }
             else TileRenderer.PrintEmpty(ApplyDuoColor(tile.indexer));
@@ -138,10 +133,27 @@ namespace Engine
             }
             return false;
         }
+        bool CheckMoveables(Tile tile)
+        {
+            foreach (var objPos in CheckersEngine.Moveables)
+            {
+                if (tile.indexer.Equals(objPos))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 
         void RenderHighlight(Tile tile)
         {
             TileRenderer.PrintHightlight(ApplyDuoColor(tile.indexer));
+        }
+
+        void RenderMaso(Tile tile)
+        {
+            ObjectSigns[tile.tileObject.GetType()].PrintMaso(ApplyDuoColor(tile.indexer), (int)tile.tileObject.ObjectActor);
+
         }
 
         void EnableRenderSelection()
