@@ -78,12 +78,11 @@ namespace Engine
                         if (true)//check if this tile is a viable move
                             RenderHighlight(item);
                     }
-                    else if (item.indexer.Equals(new Vector2Int(2, 3)))//if this is the selected tile
+                    else if (item.indexer.Equals(TheEngine.indexer))//if this is the selected tile
                     {
                         EnableRenderSelection();
                         RenderTile(item);
                         DisableRenderSelection();
-                        continue;
                     }
                     else RenderTile(item);
                     if (item.indexer.x == map.gridSize.x)

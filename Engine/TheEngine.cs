@@ -11,28 +11,6 @@ namespace Engine
     {
         public static Vector2Int indexer { get; protected set; } = new(4, 4);
 
-        public virtual void GetInput()
-        {
-            ConsoleKey i = Console.ReadKey().Key;
-
-            switch(i)
-            {
-                case ConsoleKey.UpArrow:
-                    indexer = new Vector2Int(indexer.x, indexer.y - 1);
-                    break; 
-                case ConsoleKey.DownArrow:
-                    indexer = new Vector2Int(indexer.x, indexer.y + 1);
-                    break;
-                case ConsoleKey.LeftArrow:
-                    indexer = new Vector2Int(indexer.x - 1, indexer.y);
-                    break;
-                case ConsoleKey.RightArrow:
-                    indexer = new Vector2Int(indexer.x + 1, indexer.y);
-                    break;
-                default:
-                    break;
-            }
-        }
     }
 
 
@@ -98,7 +76,7 @@ namespace Engine
         public void CreateTileMap<T>()
         {
             map = Factory.TileMapFactory<Tilemap<RectangleTile>, RectangleTile>();
-            map.InitializeTileMap(new Vector2Int(8,8));
+            map.InitializeTileMap(new Vector2Int(8, 8));
         }
 
         public void CreateTileObject<T>(Vector2Int tileIndex, int actor) where T : TileObject, new()
@@ -151,10 +129,17 @@ namespace Engine
 
         public bool ValidateMove(Vector2Int startPos, Vector2Int move)
         {
+            Tile t, t2;
             TileObject to = map.GetTileObjectByTileIndexer(startPos);
-            Tile t = map.GetTileByIndexer(startPos);
+            t = map.GetTileByIndexer(startPos);
             Vector2Int newPosition = to.CalculateNewPosition(move);
-            Tile t2 = map.GetTileByIndexer(newPosition);
+            if (!ExtensionMethods.In2DArrayBounds(map.grid, newPosition))
+                return false;
+            t2 = map.GetTileByIndexer(newPosition);
+
+
+
+
 
 
             if
@@ -185,15 +170,42 @@ namespace Engine
                 (to is QueenPiece && t2.tileObject == null
                 && t2.state != Tile.State.Hole)
             {
-                MoveTileObject(startPos, move);
+                //MoveTileObject(startPos, move);
+                return true;
             }
 
             return false;
         }
 
-        public override void GetInput()
+        public void GetInput()
         {
-            base.GetInput();
+            ConsoleKey i = Console.ReadKey().Key;
+
+            switch (i)
+            {
+                case ConsoleKey.UpArrow:
+                    indexer = new Vector2Int(indexer.x, indexer.y - 1);
+                    break;
+                case ConsoleKey.DownArrow:
+                    indexer = new Vector2Int(indexer.x, indexer.y + 1);
+                    break;
+                case ConsoleKey.LeftArrow:
+                    indexer = new Vector2Int(indexer.x - 1, indexer.y);
+                    break;
+                case ConsoleKey.RightArrow:
+                    indexer = new Vector2Int(indexer.x + 1, indexer.y);
+                    break;
+                case ConsoleKey.Enter:
+                    if (map.CheckForTileObject(indexer))
+                    {
+                        selectedObject = map.GetTileObjectByTileIndexer(indexer);
+
+                        GetValidatedMoves(selectedObject);
+                    }
+                    break;
+                default:
+                    break;
+            }
 
             if (indexer.x > map.gridSize.x)
                 indexer = new Vector2Int(map.gridSize.x, indexer.y);
@@ -204,12 +216,6 @@ namespace Engine
             else if (indexer.y < 1)
                 indexer = new Vector2Int(indexer.x, 1);
 
-            if (Console.ReadKey().Key == ConsoleKey.Enter && map.CheckForTileObject(indexer))
-            {
-                selectedObject = map.GetTileObjectByTileIndexer(indexer);
-
-                GetValidatedMoves(selectedObject);
-            }
         }
 
         public void GetValidatedMoves(TileObject to)

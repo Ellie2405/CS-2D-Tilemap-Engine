@@ -64,7 +64,7 @@ namespace Engine
             {
                 if (item.indexer.x == index.x && item.indexer.y == index.y) return item;
             }
-
+            
             throw new Exception("Tile doesnt exist");
         }
 
