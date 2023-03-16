@@ -81,7 +81,7 @@ namespace Engine
         public void CreateTileMap<T>()
         {
             map = Factory.TileMapFactory<Tilemap<RectangleTile>, RectangleTile>();
-            map.InitializeTileMap(new Vector2Int(8, 8));
+            map.InitializeTileMap(new Vector2Int(8,8));
         }
 
         public void CreateTileObject<T>(Vector2Int tileIndex, int actor) where T : TileObject, new()

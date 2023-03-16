@@ -13,6 +13,8 @@ namespace Engine
         List<TileRenderer> tileRenderers = new();
 
         int duoColorCount = 1;
+        int largeTileSize = 3;
+        bool renderLargeTiles = false;
 
         #region Constructors
 
@@ -66,19 +68,53 @@ namespace Engine
 
         public override void Render(Tilemap<RectangleTile> map)
         {
-            foreach (var item in map)
+            //normal render logic
+            if (!renderLargeTiles)
             {
-                if (item.indexer.Equals(new Vector2Int(2, 3)))//selected?
+                foreach (var item in map)
                 {
-                    EnableRenderSelection();
-                    RenderTile(item);
-                    DisableRenderSelection();
-                    continue;
+                    if (item.indexer.Equals(new Vector2Int(2, 1)))//if something is selected
+                    {
+                        if (true)//check if this tile is a viable move
+                            RenderHighlight(item);
+                    }
+                    else if (item.indexer.Equals(new Vector2Int(2, 3)))//if this is the selected tile
+                    {
+                        EnableRenderSelection();
+                        RenderTile(item);
+                        DisableRenderSelection();
+                        continue;
+                    }
+                    else RenderTile(item);
+                    if (item.indexer.x == map.gridSize.x)
+                        Console.WriteLine();
                 }
-                RenderTile(item);
-                if (item.indexer.x == map.gridSize.x)
-                    Console.WriteLine();
             }
+            //large tile render logic
+            else
+            {
+                //render each tile n^2 times by rendering each tile n times and each row n times
+                int tileIterator = 0; //iterates the tiles duh
+                int heightIterator = 0; //iterates how many times each row completed render
+                while (tileIterator < map.Count())
+                {
+                    for (int widthIterator = 0; widthIterator < largeTileSize; widthIterator++) //iterates width of the tile
+                    {
+                        RenderTile(map.grid[tileIterator % map.gridSize.x, tileIterator / map.gridSize.x]);
+                    }
+                    tileIterator++;
+                    if (tileIterator % map.gridSize.x == 0) //if done rendering a 'pixel' row, start next row
+                    {
+                        Console.WriteLine();
+                        heightIterator++;
+                        if (heightIterator < largeTileSize) //if not done rendering the whole height of the row, render it again
+                        {
+                            tileIterator -= map.gridSize.x;
+                        }
+                        else heightIterator = 0;
+                    }
+                }    
+            }        
         }
 
         void RenderTile(Tile tile)
@@ -86,12 +122,18 @@ namespace Engine
             if (tile.tileObject != null)
             {
                 //check if object belongs to player one
-                if (tile.tileObject.ObjectActor == 0)
-                    ObjectSigns[tile.tileObject.GetType()].Print(ApplyDuoColor(tile.indexer), 0);
-                else
-                    ObjectSigns[tile.tileObject.GetType()].Print(ApplyDuoColor(tile.indexer), 1);
+                //if (tile.tileObject.ObjectActor == 0)
+                //    ObjectSigns[tile.tileObject.GetType()].Print(ApplyDuoColor(tile.indexer), 0);
+                //else
+                //    ObjectSigns[tile.tileObject.GetType()].Print(ApplyDuoColor(tile.indexer), 1);
+                    ObjectSigns[tile.tileObject.GetType()].Print(ApplyDuoColor(tile.indexer), (int)tile.tileObject.ObjectActor);
             }
             else TileRenderer.PrintEmpty(ApplyDuoColor(tile.indexer));
+        }
+
+        void RenderHighlight(Tile tile)
+        {
+            TileRenderer.PrintHightlight(ApplyDuoColor(tile.indexer));
         }
 
         void EnableRenderSelection()
@@ -112,6 +154,11 @@ namespace Engine
         int ApplyDuoColor(Vector2Int index)
         {
             return (int)((index.x + index.y) % duoColorCount);
+        }
+
+        void EnableLargeTiles()
+        {
+
         }
 
         public override void Start()

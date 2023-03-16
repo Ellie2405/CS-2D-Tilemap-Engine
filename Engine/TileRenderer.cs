@@ -56,7 +56,19 @@ namespace Engine
             Console.Write(bracketSignClose);
             Console.BackgroundColor = default;
             Console.ForegroundColor = ConsoleColor.Gray;
+        }
 
+        static public void PrintHightlight(int duoColorIndex)
+        {
+            if (BoardColors[duoColorIndex] == ConsoleColor.Yellow || BoardColors[duoColorIndex] == ConsoleColor.DarkYellow)
+                Console.BackgroundColor = 15 - BoardColors[duoColorIndex];
+            else
+                Console.BackgroundColor = ConsoleColor.DarkYellow;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.Write(bracketSignOpen + " ");
+            Console.Write(bracketSignClose);
+            Console.BackgroundColor = default;
+            Console.ForegroundColor = ConsoleColor.Gray;
         }
 
         static public void SetBoardColor(ConsoleColor color1 = ConsoleColor.White, ConsoleColor color2 = ConsoleColor.DarkGray)
@@ -71,7 +83,7 @@ namespace Engine
             TeamColors[1] = color2;
         }
 
-        static public void SetBracketChars(char a,char b)
+        static public void SetBracketChars(char a, char b)
         {
             bracketSignOpen = a;
             bracketSignClose = b;

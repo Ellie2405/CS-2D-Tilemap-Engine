@@ -10,13 +10,19 @@ namespace Engine
     public struct Vector2Int
     {
         public int x { get; private set; }
-               
+
         public int y { get; private set; }
 
         public Vector2Int(int x, int y)
         {
             this.x = x;
             this.y = y;
+        }
+
+        public Vector2Int(Vector2Int vector)
+        {
+            x = vector.x;
+            y = vector.y;
         }
 
         #region Spiral variables
@@ -81,7 +87,7 @@ namespace Engine
             return this.x == d.x && this.y == d.y;
         }
 
-        public override int GetHashCode() 
+        public override int GetHashCode()
         {
             int X = x < 0 ? 0 : 1;
             int Y = y < 0 ? 0 : 1;

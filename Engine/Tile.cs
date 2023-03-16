@@ -12,9 +12,9 @@ namespace Engine
     /// </summary>
     public abstract class Tile
     {
-        public Vector2Int indexer { get; protected set; } 
+        public Vector2Int indexer { get; protected set; }
         public TileObject? tileObject { get; protected set; }
-        
+
         public enum Actor
         {
             Player1,
@@ -32,7 +32,8 @@ namespace Engine
 
         public void SetIndexer(Vector2Int index)
         {
-            indexer = index;
+            //we had a bug where these values were passed the wrong way and we couldnt figure it out, so this line is written the opposite now
+            indexer = new(index.y, index.x);
         }
 
         public void SetTileState(State state)
@@ -40,13 +41,13 @@ namespace Engine
             this.state = state;
         }
 
-        public void SetObjectToTile(TileObject to) 
+        public void SetObjectToTile(TileObject to)
         {
             tileObject = to;
             state = State.Occupied;
         }
 
-        public void PassedCallBack() 
+        public void PassedCallBack()
         {
             tileObject = null;
             state = State.Empty;

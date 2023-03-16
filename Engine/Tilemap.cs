@@ -26,7 +26,7 @@ namespace Engine
         {
             SetGridSize(gridSize);
             InjectTiles(gridSize, grid);
-            SetIndexersInMap();           
+            SetIndexersInMap();
             GetEnumerator();
             CheckersEngine.onPassedTile += RemoveObjectFromTile;
         }
@@ -39,11 +39,11 @@ namespace Engine
 
         public void InjectTiles(Vector2Int gridSize, Tile[,] grid)
         {
-            for (int i = 0; i < gridSize.x; i++)
+            for (int i = 0; i < gridSize.y; i++)
             {
-                for (int j = 0; j < gridSize.y; j++)
+                for (int j = 0; j < gridSize.x; j++)
                 {
-                    grid[i, j] = Factory.TileFactory<T>();
+                    grid[j, i] = Factory.TileFactory<T>();
                 }
             }
         }
@@ -65,7 +65,7 @@ namespace Engine
                 if (item.indexer.x == index.x && item.indexer.y == index.y) return item;
             }
 
-            throw new Exception("Tile doesnt exist");    
+            throw new Exception("Tile doesnt exist");
         }
 
         public TileObject GetTileObjectByTileIndexer(Vector2Int index)
@@ -84,7 +84,7 @@ namespace Engine
             {
                 if (item.indexer.x == index.x && item.indexer.y == index.y && item.tileObject != null) return true;
 
-                else if (item.indexer.x == index.x && item.indexer.y == index.y && item.tileObject == null) return false;              
+                else if (item.indexer.x == index.x && item.indexer.y == index.y && item.tileObject == null) return false;
             }
             return false;
         }
@@ -110,7 +110,7 @@ namespace Engine
 
     public struct TilemapEnumerator<Tile> : IEnumerator<Tile>
     {
-        Vector2Int index = new Vector2Int(0, -1);
+        Vector2Int index = new Vector2Int(-1, 0);
         Tile[,] enumerables;
 
         public TilemapEnumerator(Tile[,] enumerables)
@@ -130,8 +130,11 @@ namespace Engine
 
         public bool MoveNext()
         {
-            if (index.y < enumerables.GetLength(1) - 1) index = new Vector2Int(index.x, index.y + 1);
-            else if (index.y == enumerables.GetLength(1) - 1) index = new Vector2Int(index.x + 1, 0);
+            //if (index.y < enumerables.GetLength(1) - 1) index = new Vector2Int(index.x, index.y + 1);
+            //else if (index.y == enumerables.GetLength(1) - 1) index = new Vector2Int(index.x + 1, 0);
+            if (index.x < enumerables.GetLength(0) - 1) index = new Vector2Int(index.x + 1, index.y);
+            else if (index.x == enumerables.GetLength(0) - 1) index = new Vector2Int(0, index.y + 1);
+
 
             return index.x < enumerables.GetLength(0) && index.y < enumerables.GetLength(1);
         }
