@@ -9,41 +9,54 @@ using System.Threading.Tasks;
 
 namespace Engine
 {
-    public class Tilemap<T> : IEnumerable<Tile> where T : Tile, new()
+    /// <summary>
+    /// A collection object, creates a 2D array, has its own enumerator and uses an interface to manipulate its data.
+    /// Uses an int indexer to traverse through the collection.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public class Tilemap<T> : ICheckersMapTools, IEnumerable<Tile> where T : Tile, new()
     {
+
         public T[,] grid;
         //public Vector2 testStartPos = new Vector2(4, 4); // uncomment and insert in GetEnumerator() if you want to use the spiral enumerator
         public Vector2Int gridSize = new Vector2Int(8, 8);
         private Vector2Int indexValue = new Vector2Int(1, 1);
 
-        public Tilemap(Vector2Int gridSize)
+        public void InitializeTileMap(Vector2Int gridSize)
         {
-            grid = new T[gridSize.x, gridSize.y];
+            SetGridSize(gridSize);
             InjectTiles(gridSize, grid);
-            this.gridSize = gridSize;
-
-            foreach (var item in grid)
-            {
-                item.SetIndexer(indexValue);
-                indexValue = new Vector2Int(indexValue.x +1, indexValue.y);
-                if (indexValue.x == grid.GetLength(0) + 1) indexValue = new Vector2Int(1, indexValue.y + 1);
-            }
-
+            SetIndexersInMap();           
             GetEnumerator();
+            CheckersEngine.onPassedTile += RemoveObjectFromTile;
         }
 
+        public void SetGridSize(Vector2Int gridSize)
+        {
+            grid = new T[gridSize.x, gridSize.y];
+            this.gridSize = gridSize;
+        }
 
         public void InjectTiles(Vector2Int gridSize, Tile[,] grid)
         {
             for (int i = 0; i < gridSize.x; i++)
             {
                 for (int j = 0; j < gridSize.y; j++)
-                {                    
-                    grid[i, j] = new T();
+                {
+                    grid[i, j] = Factory.TileFactory<T>();
                 }
             }
         }
 
+        public void SetIndexersInMap()
+        {
+            foreach (var item in grid)
+            {
+                item.SetIndexer(indexValue);
+                indexValue = new Vector2Int(indexValue.x + 1, indexValue.y);
+                if (indexValue.x == grid.GetLength(0) + 1) indexValue = new Vector2Int(1, indexValue.y + 1);
+            }
+        }
 
         public Tile GetTileByIndexer(Vector2Int index)
         {
@@ -74,6 +87,14 @@ namespace Engine
                 else if (item.indexer.x == index.x && item.indexer.y == index.y && item.tileObject == null) return false;              
             }
             return false;
+        }
+
+        public void RemoveObjectFromTile(Vector2Int index)
+        {
+            foreach (var item in grid)
+            {
+                if (item.indexer.x == index.x && item.indexer.y == index.y) item.PassedCallBack();
+            }
         }
 
         public IEnumerator<Tile> GetEnumerator()

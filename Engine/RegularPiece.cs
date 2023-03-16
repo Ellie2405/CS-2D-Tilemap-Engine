@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Engine
 {
+    /// <summary>
+    /// A regular checkers piece.
+    /// </summary>
     internal class RegularPiece : TileObject
     {
         public RegularPiece()
@@ -25,7 +28,6 @@ namespace Engine
             {
                 ObjectActor = ObjectActor,
                 Position = Position,
-                ID = ID,
                 moves = moves
             };
             return item;

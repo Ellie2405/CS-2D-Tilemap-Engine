@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Engine
 {
+    /// <summary>
+    /// Represents a base class for tiles to be used in a tile map.
+    /// </summary>
     public abstract class Tile
     {
         public Vector2Int indexer { get; protected set; } 
@@ -23,7 +26,7 @@ namespace Engine
         {
             Empty,
             Occupied,
-            Hole
+            Hole // core engine mazochist
         }
         public State state = State.Empty;
 
@@ -43,7 +46,7 @@ namespace Engine
             state = State.Occupied;
         }
 
-        public void PassedCallBack() //eaten
+        public void PassedCallBack() 
         {
             tileObject = null;
             state = State.Empty;

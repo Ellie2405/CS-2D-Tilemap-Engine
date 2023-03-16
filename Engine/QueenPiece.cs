@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Engine
 {
+    /// <summary>
+    /// A Queen/King checkers piece.
+    /// </summary>
     internal class QueenPiece : TileObject
     {
         public QueenPiece()
@@ -49,7 +52,6 @@ namespace Engine
             {
                 ObjectActor = ObjectActor,
                 Position = Position,
-                ID = ID,
                 moves = moves
             };
             return item;

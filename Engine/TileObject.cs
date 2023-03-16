@@ -7,12 +7,13 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Engine
-{
+{/// <summary>
+/// Represents a base class for objects in the simulation.
+/// </summary>
     public abstract class TileObject : ICloneable
     {
         public static Action<TileObject> onSteppedCallback;
 
-        public string ID { get; protected set; }
         public Vector2Int Position { get; protected set; }
 
 
@@ -27,10 +28,9 @@ namespace Engine
         public Dictionary<string, Vector2Int> moves = new Dictionary<string, Vector2Int>();
 
 
-        public void ObjectSetter(int actorNum, string iD, Vector2Int position)
+        public virtual void ObjectSetter(int actorNum, Vector2Int position)
         {
             Position = position;
-            ID = iD;
             if (actorNum == 1) ObjectActor = Actor.Player1;
             else if (actorNum == 2) ObjectActor = Actor.Player2;
         }

@@ -19,12 +19,15 @@ namespace Engine
             this.y = y;
         }
 
+        #region Spiral variables
         //spiral moves
         public static Vector2Int up => new Vector2Int(0, 1);
         public static Vector2Int down => new Vector2Int(0, -1);
         public static Vector2Int right => new Vector2Int(1, 0);
         public static Vector2Int left => new Vector2Int(-1, 0);
+        #endregion
 
+        #region Regular checkers piece moves
         //Regular piece moves
         public static Vector2Int rightDiagonalUp => new Vector2Int(1, -1);
         public static Vector2Int leftDiagonalUp => new Vector2Int(-1, -1);
@@ -34,7 +37,9 @@ namespace Engine
         public static Vector2Int leftDiagonalUpEat => new Vector2Int(-2, -2);
         public static Vector2Int rightDiagonalDownEat => new Vector2Int(2, 2);
         public static Vector2Int leftDiagonalDownEat => new Vector2Int(-2, 2);
+        #endregion
 
+        #region Queen checkers piece moves
         //Queen piece moves
         public static Vector2Int rightDiagonalUp2 => new Vector2Int(2, -2);
         public static Vector2Int rightDiagonalUp3 => new Vector2Int(3, -3);
@@ -63,6 +68,7 @@ namespace Engine
         public static Vector2Int leftDiagonalDown5 => new Vector2Int(-5, 5);
         public static Vector2Int leftDiagonalDown6 => new Vector2Int(-6, 6);
         public static Vector2Int leftDiagonalDown7 => new Vector2Int(-7, 7);
+        #endregion
 
         public override string ToString()
         {
@@ -75,9 +81,12 @@ namespace Engine
             return this.x == d.x && this.y == d.y;
         }
 
-        public override int GetHashCode() //redo this pls
+        public override int GetHashCode() 
         {
-            return (int)x + (int)y;
+            int X = x < 0 ? 0 : 1;
+            int Y = y < 0 ? 0 : 1;
+            return X * 100_000 + Math.Abs(x) * 1_000 + Y * 100 + Math.Abs(y);
+
         }
 
         public Vector2Int AddVector(Vector2Int vector)

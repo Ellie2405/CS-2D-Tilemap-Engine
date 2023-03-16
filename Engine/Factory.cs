@@ -6,16 +6,23 @@ using System.Threading.Tasks;
 
 namespace Engine
 {
-    internal class Factory
+    public static class Factory
     {
-        public T TileObjectFacroty<T>() where T : TileObject, new()
+        public static T TileObjectFactory<T>() where T : TileObject, new()
         {
             return new T();
         }
 
-        public T TileFacroty<T>() where T : Tile, new()
+        public static T TileFactory<T>() where T : Tile, new()
         {
             return new T();
+        }
+
+        public static T1 TileMapFactory<T1, T2>() 
+            where T1 : Tilemap<T2>, new()
+            where T2 : Tile, new() 
+        {
+            return new T1();
         }
     }
 }
