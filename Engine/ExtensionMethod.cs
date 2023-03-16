@@ -8,11 +8,13 @@ namespace Engine
 {
     internal static class ExtensionMethods
     {
+        //returns string variable after removing the white space and making all characters smallcaps.
         public static string TrimAndLowerCapString(string str)
         {
             return str.Trim().ToLower();
         }
 
+        //checking if an x and y value is inside the 2D array.
         public static bool In2DArrayBounds(object[,] array, int x, int y)
         {
             if (x < array.GetLowerBound(0) || x > array.GetUpperBound(0) || y < array.GetLowerBound(1) || y > array.GetUpperBound(1)) 
@@ -27,6 +29,7 @@ namespace Engine
             return true;
         }
 
+        //check if the given array equals null or bigger then 0.
         public static bool CheckArrayNullOrBigger(object[,] array)
         {
             if (array.Length == 0 || array.Length < 0)
