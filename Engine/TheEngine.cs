@@ -9,7 +9,7 @@ namespace Engine
 {
     abstract class TheEngine
     {
-        public static Vector2Int indexer { get; protected set; } = new(1, 1);
+        public static Vector2Int indexer { get; protected set; } = new(4, 4);
 
         public virtual void GetInput()
         {
@@ -24,10 +24,10 @@ namespace Engine
                     indexer = new Vector2Int(indexer.x, indexer.y + 1);
                     break;
                 case ConsoleKey.LeftArrow:
-                    indexer = new Vector2Int(indexer.x + 1, indexer.y);
+                    indexer = new Vector2Int(indexer.x - 1, indexer.y);
                     break;
                 case ConsoleKey.RightArrow:
-                    indexer = new Vector2Int(indexer.x - 1, indexer.y);
+                    indexer = new Vector2Int(indexer.x + 1, indexer.y);
                     break;
                 default:
                     break;
@@ -46,6 +46,8 @@ namespace Engine
         }
 
         public Tilemap<RectangleTile> map;
+        public TileObject? selectedObject;
+        List<Vector2Int> validMoves = new List<Vector2Int>();
 
         public void Start()
         {
@@ -76,6 +78,21 @@ namespace Engine
             CreateTileMap<Tilemap<RectangleTile>>();
             CreateTileObject<QueenPiece>(new Vector2Int(6, 5), 1);
             CreateTileObject<RegularPiece>(new Vector2Int(4, 3), 2);
+        }
+
+        public void Update()
+        {
+            bool _isDone = false;
+
+            while (_isDone == false)
+            {
+                GetInput();
+
+                if (Console.ReadKey().Key == ConsoleKey.Enter)
+                {
+                    _isDone = true;
+                }
+            }
         }
 
         public void CreateTileMap<T>()
@@ -180,12 +197,30 @@ namespace Engine
 
             if (indexer.x > map.gridSize.x)
                 indexer = new Vector2Int(map.gridSize.x, indexer.y);
-            else if (indexer.x < map.gridSize.x)
+            else if (indexer.x < 1)
                 indexer = new Vector2Int(1, indexer.y);
             else if (indexer.y > map.gridSize.y)
                 indexer = new Vector2Int(indexer.x, map.gridSize.y);
-            else if (indexer.y < map.gridSize.y)
+            else if (indexer.y < 1)
                 indexer = new Vector2Int(indexer.x, 1);
+
+            if (Console.ReadKey().Key == ConsoleKey.Enter && map.CheckForTileObject(indexer))
+            {
+                selectedObject = map.GetTileObjectByTileIndexer(indexer);
+
+                GetValidatedMoves(selectedObject);
+            }
+        }
+
+        public void GetValidatedMoves(TileObject to)
+        {
+            foreach (var item in to.moves)
+            {
+                if (ValidateMove(to.Position, item.Value))
+                {
+                    validMoves.Add(item.Value);
+                }
+            }
         }
     }
 }
